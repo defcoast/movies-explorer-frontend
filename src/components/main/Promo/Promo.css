@@ -1,0 +1,18 @@
+.promo {
+	height: 634px;
+	background: #f3c1f8 url('../../../images/promo-logo.svg') no-repeat calc(100% - 70px) calc(100% - 60px);
+	padding: 50px 70px;
+	margin-top: -74px;
+}
+
+.promo__title {
+	margin: 68px 0 0;
+	max-width: 580px;
+	text-align: start;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 40px;
+	line-height: 1.3;
+	color: #000;
+}
