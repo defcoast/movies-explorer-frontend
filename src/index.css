@@ -1,6 +1,10 @@
 /* Подключение шрифтов */
 @import url(./vendor/fonts/fonts.css);
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,4 +17,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.container {
+  width: 1140px;
+  margin: 0 auto;
 }
