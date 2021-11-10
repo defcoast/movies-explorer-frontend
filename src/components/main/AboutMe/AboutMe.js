@@ -22,12 +22,12 @@ export default function AboutMe() {
 					</p>
 					<ul className="about__social-link-list">
 						<li className="about__social-link-item">
-							<a className="about__social-link" href="#">
+							<a className="about__social-link" href="https://t.me/Rozhkov2222">
 								Telegram
 							</a>
 						</li>
 						<li className="about__social-link-item">
-							<a className="about__social-link" href="#">
+							<a className="about__social-link" href="https://github.com/defcoast/">
 								Github
 							</a>
 						</li>
@@ -43,7 +43,7 @@ export default function AboutMe() {
 				</h3>
 
 				<ul className="about__list">
-					<a href="#" className="about__link">
+					<a href="https://defcoast.github.io/how-to-learn/" className="about__link">
 						<li className="about__item">
 						<span className="about__item-name">
 							Статичный сайт
@@ -52,7 +52,7 @@ export default function AboutMe() {
 						</li>
 					</a>
 
-					<a href="#" className="about__link">
+					<a href="https://defcoast.github.io/russian-travel/" className="about__link">
 						<li className="about__item">
 						<span className="about__item-name">
 							Адаптивный сайт
@@ -61,7 +61,7 @@ export default function AboutMe() {
 						</li>
 					</a>
 
-					<a href="#" className="about__link">
+					<a href="https://defcoast.github.io/mesto/" className="about__link">
 						<li className="about__item">
 						<span className="about__item-name">
 							Одностраничное приложение

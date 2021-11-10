@@ -1,6 +1,7 @@
 import React from "react";
 import './Register.css';
 import Button from "../others/Button/Button";
+import {Link} from "react-router-dom";
 
 export default function Register() {
 	return (
@@ -43,9 +44,9 @@ export default function Register() {
 						</Button>
 						<span className="register__text">
 							Уже зарегистрированы?&nbsp;
-							<a href="" className="register__link">
+							<Link to="/signin" className="register__link">
 								Войти
-							</a>
+							</Link>
 						</span>
 					</div>
 				</form>

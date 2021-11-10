@@ -1,6 +1,7 @@
 import React from "react";
 import './Login.css';
 import Button from "../others/Button/Button";
+import {Link} from "react-router-dom";
 
 export default function Login() {
 	return (
@@ -36,9 +37,9 @@ export default function Login() {
 						</Button>
 						<span className="login__text">
 							Ещё не зарегистрированы?&nbsp;
-							<a href="" className="login__link">
+							<Link to="/signup" className="login__link">
 								Регистрация
-							</a>
+							</Link>
 						</span>
 					</div>
 				</form>
