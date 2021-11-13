@@ -41,6 +41,7 @@
 	color: #000;
 	mix-blend-mode: normal;
 	max-width: 600px;
+	padding-right: 50px;
 }
 
 .about__social-link-list {
@@ -154,6 +155,7 @@
 	.about__description {
 		font-size: 11px;
 		line-height: 1.45;
+		padding: 0;
 	}
 
 	.about__social-link-list {
