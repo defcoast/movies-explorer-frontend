@@ -4,7 +4,13 @@
 }
 
 .profile__form {
-	min-width: 410px;
+	width: 100%;
+	max-width: 410px;
+	padding: 0 30px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .profile__title {
@@ -89,5 +95,10 @@
 .profile__link_color_red {
 	font-weight: 500;
 	color: #ff4062;
-;
+}
+
+@media screen and (max-width: 767px) {
+	.profile__inputs {
+		margin: 80px 0 0;
+	}
 }

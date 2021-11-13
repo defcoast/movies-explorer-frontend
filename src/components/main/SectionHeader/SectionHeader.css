@@ -8,4 +8,12 @@
 	font-size: 22px;
 	line-height: 0.81;
 	color: #000;
+	letter-spacing: -0.04em;
+}
+
+@media screen and (max-width: 767px) {
+	.section-header__title {
+		font-size: 18px;
+		line-height: 1.22;
+	}
 }

@@ -3,38 +3,39 @@ import './Profile.css';
 
 export default function Profile() {
 	return (
-		<div className="container">
 			<section className="profile">
 				<form action="#" className="profile__form">
-					<h1 className="profile__title">
-						Привет, Виталий!
-					</h1>
+					<div>
+						<h1 className="profile__title">
+							Привет, Виталий!
+						</h1>
 
-					<ul className="profile__inputs">
-						<li className="profile__inputs-item">
-							<label htmlFor="name" className="profile__label">
-								Имя
-							</label>
-							<input
-								type="text"
-								className="profile__input"
-								placeholder="Виталий"
-								id="name"
-							/>
-						</li>
+						<ul className="profile__inputs">
+							<li className="profile__inputs-item">
+								<label htmlFor="name" className="profile__label">
+									Имя
+								</label>
+								<input
+									type="text"
+									className="profile__input"
+									placeholder="Виталий"
+									id="name"
+								/>
+							</li>
 
-						<li className="profile__inputs-item">
-							<label htmlFor="email" className="profile__label">
-								E-mail
-							</label>
-							<input
-								type="email"
-								className="profile__input"
-								placeholder="pochta@yandex.ru"
-								id="email"
-							/>
-						</li>
-					</ul>
+							<li className="profile__inputs-item">
+								<label htmlFor="email" className="profile__label">
+									E-mail
+								</label>
+								<input
+									type="email"
+									className="profile__input"
+									placeholder="pochta@yandex.ru"
+									id="email"
+								/>
+							</li>
+						</ul>
+					</div>
 
 					<div className="profile__links">
 						<a href="#" className="profile__link">
@@ -46,6 +47,5 @@ export default function Profile() {
 					</div>
 				</form>
 			</section>
-		</div>
 	);
 }

@@ -1,0 +1,36 @@
+.checkbox {
+	 cursor: pointer;
+ }
+
+.checkbox__box {
+	position: relative;
+	width: 36px;
+	height: 20px;
+	border-radius: 36px;
+	background-color: #2be080;
+	transition: .3s;
+}
+
+.checkbox__input {
+	display: none;
+}
+
+.checkbox__box:hover {
+	filter: brightness(1.05);
+}
+
+.checkbox__input:checked ~ .checkbox__box::before {
+	left: calc(36px - 20px + 2px);
+}
+
+.checkbox__box::before {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: calc(20px - 2 * 2px);
+	height: calc(20px - 2 * 2px);
+	background-color: #fff;
+	border-radius: 50%;
+	transition: .3s;
+}

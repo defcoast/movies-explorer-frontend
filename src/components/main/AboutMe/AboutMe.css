@@ -118,3 +118,62 @@
 	color: currentColor;
 	text-decoration: none;
 }
+
+@media screen and (max-width: 1023px) {
+	.about {
+		padding: 70px 50px 125px;
+
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.about {
+		padding: 70px 14px 70px;
+	}
+
+	.about__me {
+		flex-direction: column-reverse;
+	}
+
+	.about__image {
+		width: 100%;
+		height: 100%;
+		margin-bottom: 40px;
+	}
+
+	.about__title {
+		font-size: 30px;
+		line-height: 1.2;
+	}
+
+	.about__subtitle {
+		font-size: 11px;
+		line-height: 1.45;
+	}
+
+	.about__description {
+		font-size: 11px;
+		line-height: 1.45;
+	}
+
+	.about__social-link-list {
+		margin: 40px 0 0;
+	}
+
+	.about__portfolio {
+		margin-top: 70px;
+	}
+
+	.about__item-name {
+		font-size: 18px;
+		line-height: 1.56;
+	}
+
+	.about__portfolio-title {
+		font-size: 14px;
+		line-height: 1.43;
+		mix-blend-mode: normal;
+	}
+}
+
+

@@ -23,7 +23,7 @@
 	font-size: 20px;
 	line-height: 24px;
 	color: #000000;
-
+	letter-spacing: -0.04em;
 }
 
 .about-project__item-description {
@@ -53,18 +53,62 @@
 .about-project__timeline-half_color_black {
 	background-color: #000;
 	color: #fff;
-	width: 20%;
+	width: 35%;
 }
 
 .about-project__timeline-half_color_grey {
 	background-color: #f2f2f2;
 	color: #000;
-	width: 80%;
+	width: 65%;
+}
+
+.about-project__half-name {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 1.21;
+	text-align: center;
 }
 
 .about-project__half-description {
 	position: absolute;
 	top: 45px;
 	color: #a0a0a0;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 1.21;
+	text-align: center;
+	padding: 10px;
 }
 
+@media screen and (max-width: 1023px) {
+	.about-project {
+		padding: 110px 50px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.about-project {
+		padding: 110px 18px;
+	}
+
+	.about-project__list {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 56px;
+	}
+
+	.about-project__half-name {
+		font-size: 11px;
+		line-height: 1.18;
+	}
+
+	.about-project__half-description {
+		font-size: 11px;
+		line-height: 1.18;
+	}
+}

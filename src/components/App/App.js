@@ -1,42 +1,46 @@
 import './App.css';
-import Header from '../Header/Header'
 import Main from "../main/Main/Main";
-import Footer from "../Footer/Footer";
-import { Route } from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Movies from '../movies/Movies/Movies';
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
+import React from "react";
+import NotFound from "../NotFound/NotFound";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-        <Route exact path="/" >
-            <Main />
-        </Route>
+      <Switch>
+          <Route exact path="/" >
+              <Main />
+          </Route>
 
-        <Route path="/movies">
-            <Movies />
-        </Route>
+          <Route path="/movies">
+              <Movies />
+          </Route>
 
-        <Route path="/saved-movies">
-            <SavedMovies />
-        </Route>
+          <Route path="/saved-movies">
+              <SavedMovies />
+          </Route>
 
-        <Route path="/profile">
-	        <Profile />
-        </Route>
+          <Route path="/profile">
+              <Profile />
+          </Route>
 
-        <Route path="/signin">
-            <Login />
-        </Route>
+          <Route path="/signin">
+              <Login />
+          </Route>
 
-        <Route path="/signup">
-            <Register />
-        </Route>
-      <Footer />
+          <Route path="/signup">
+              <Register />
+          </Route>
+
+          <Route path="*">
+              <NotFound />
+          </Route>
+      </Switch>
     </div>
   );
 }
