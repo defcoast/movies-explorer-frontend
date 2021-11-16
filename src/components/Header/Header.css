@@ -7,3 +7,10 @@
 	background-color: transparent;
 	z-index: 2;
 }
+
+@media screen and (max-width: 767px) {
+	.header_type_without-nav {
+		justify-content: center;
+	}
+
+}

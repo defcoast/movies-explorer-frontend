@@ -8,7 +8,7 @@ export default function SearchForm() {
 			<form action="#" className="search__form">
 				<div className="search__left-wrapper">
 					<span className="search__placeholder-icon" />
-					<input type="text" placeholder="Фильм" className="search__input" />
+					<input type="text" placeholder="Фильм" className="search__input" required/>
 					<button type="submit" className="search__submit-btn" />
 				</div>
 				<div className="search__right-wrapper">

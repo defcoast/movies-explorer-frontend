@@ -23,3 +23,9 @@
 .mobile-menu__close-icon:before {
 	content: url('../../../images/icons/close.svg');
 }
+
+@media screen and (max-width: 767px) {
+	.mobile-menu__cover {
+		width: 100%;
+	}
+}

@@ -112,6 +112,7 @@
 @media screen and (max-width: 767px) {
 	.login__title {
 		align-self: center;
+		text-align: center;
 	}
 
 	.login__text {

@@ -1,10 +1,22 @@
 import React from "react";
 import './MoviesCard.css';
+import CardButton from "../CardButton/CardButton";
 
 export default function MoviesCard(props) {
+	const typeBtn = {
+		save   : 'save',
+		saved  : 'saved',
+		remove : 'remove',
+	};
+
 	return (
 		<li className="card">
-			<img src={props.image} alt="Момент из фильма" className="card__image"/>
+			<CardButton className="card__button" type={typeBtn.save} />
+			<img
+				src={props.image}
+				alt="Момент из фильма"
+				className="card__image"
+			/>
 			<div className="card__info">
 				<span className="card__title">
 					{props.title}
