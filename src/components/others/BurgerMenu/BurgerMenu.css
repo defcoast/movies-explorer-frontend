@@ -1,0 +1,31 @@
+.mobile-menu__trigger:before {
+	content: url('../../../images/icons/burger-menu.svg');
+	cursor: pointer;
+}
+
+.mobile-menu__cover {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 66%;
+	height: 100vh;
+	background-color: #fff;
+	z-index: 2;
+}
+
+.mobile-menu__close-icon {
+	position: absolute;
+	top: 22px;
+	right: 22px;
+}
+
+.mobile-menu__close-icon:before {
+	content: url('../../../images/icons/close.svg');
+}
+
+@media screen and (max-width: 767px) {
+	.mobile-menu__cover {
+		width: 100%;
+	}
+}

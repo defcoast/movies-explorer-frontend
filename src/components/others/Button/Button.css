@@ -1,0 +1,22 @@
+.button {
+	width: 76px;
+	height: 32px;
+	border-radius: 3px;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 1.33;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	cursor: pointer;
+
+}
+
+.button_color_black {
+	background-color: #000;
+	color: #fff;
+
+}
