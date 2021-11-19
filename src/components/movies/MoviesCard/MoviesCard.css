@@ -4,8 +4,8 @@
 }
 
 .card__image {
-	min-width: 300px;
-	width: 100%;
+	width: 360px;
+	height: 201px;
 }
 
 .card:hover .card__button {
@@ -17,6 +17,10 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.card__title {
+	max-width: 250px;
 }
 
 .card__duration {
@@ -46,11 +50,21 @@
 	.card__info {
 		padding: 25px 0 0;
 	}
+
+	.card__image {
+		width: 339px;
+		height: 190px;
+	}
 }
 
 @media screen and (max-width: 767px) {
 	.card {
 		min-width: 300px;
 		padding: 0 10px;
+	}
+
+	.card__image {
+		width: 300px;
+		height: 168px;
 	}
 }
