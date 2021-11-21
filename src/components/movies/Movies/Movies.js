@@ -5,10 +5,57 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
+import {getFilms} from "../../../utils/MoviesApi";
 
-export default function Movies(props) {
+export default function Movies() {
+	/** Список всех фильмов полученных с сервера. */
+	const [moviesList, setMoviesList] = React.useState([]);
+
+	/** Нужно-ли отображать блок со списком фильтров. */
+	const [needShowMoviesCardsList, setNeedShowMoviesCardsList] = React.useState(false);
+
+	/** Нужно-ли отображать прелоудер. */
+	const [needShowPreloader, setNeedShowPreloader] = React.useState(false);
+
+	/** Нужно-ли отображать сообщение "Ничего не найдено". */
+	const [needShowNotFoundMsg, setNeedShowNotFoundMsg] = React.useState(false);
+
+	/** Нужно-ли отображать сообщение "Ошибка сервера". */
+	const [needShowApiErrorMsg, setNeedShowApiErrorMsg] = React.useState(false);
+
+	/** Подключения к API. Установка прелоудера. */
+	React.useEffect(() => {
+		async function fetchMoviesAPI() {
+			if (needShowMoviesCardsList) {
+				try{
+					setNeedShowPreloader(true);
+					const data = await getFilms();
+
+					if (data.length > 0) {
+						setMoviesList(data);
+					}
+					else  {
+						setNeedShowNotFoundMsg(true);
+					}
+
+					setNeedShowPreloader(false);
+				} catch (err) {
+					setNeedShowPreloader(false);
+					setNeedShowApiErrorMsg(true);
+				}
+			}
+		}
+		fetchMoviesAPI();
+	},[needShowMoviesCardsList]);
+
+	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
-		props.onSubmit(true);
+		setNeedShowMoviesCardsList(true);
+	}
+
+	/** Обработчик рендера списка фильмов для пользователей, которые уже были на сайте ранее. */
+	function handleVisitedUser(isVisitedUser) {
+		setNeedShowMoviesCardsList(isVisitedUser);
 	}
 
 	return (
@@ -18,11 +65,12 @@ export default function Movies(props) {
 				onSubmit={handleSubmit}
 			/>
 			<MoviesCardList
-				needShowMoviesCards={props.needShowMoviesCards}
-				needShowPreloader={props.needShowPreloader}
-				needShowErrorMsg={props.needShowErrorMsg}
-				cards={props.cards}
-				onSubmit={props.onSubmit}
+				moviesList={moviesList}
+				needShowMoviesCardsList={needShowMoviesCardsList}
+				needShowPreloader={needShowPreloader}
+				needShowNotFoundMsg={needShowNotFoundMsg}
+				needShowApiErrorMsg={needShowApiErrorMsg}
+				onVisitedUser={handleVisitedUser}
 			/>
 			<Footer />
 		</section>

@@ -3,82 +3,96 @@ import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../../others/Preloader/Preloader";
 
+
 export default function MoviesCardList(props) {
+	/** Список всех Фильмов. */
+	const [moviesList, setMoviesList] = React.useState(props.moviesList);
+
 	/** Количество отображаемых карточек. */
-	const [cardCount, setCardCount] = React.useState(Number(localStorage.getItem('card-count')));
-	console.log('cardCount наверху', cardCount)
-	console.log('local storage', Number(localStorage.getItem('card-count')));
+	const [totalMoviesCards, setTotalMoviesCards] = React.useState(null);
 
-	/** Нужно-ли отображать кнопку "Показать еще". */
-	const [needShowMoreMoviesBtn, setNeedShowMoreMoviesBtn] = React.useState(false);
-
-	/** Ширина экрана устройства. */
-	const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+	/** Список карточек готовых к отрисовке. */
+	const [moviesCardsList, setMoviesCardsList] = React.useState([]);
 
 	/** Количество отображаемых карточек при клике на кнопку "Показать еще". */
 	const [showCardsCountOnClickShowMore, setShowCardsCountOnClickShowMore] = React.useState(null);
 
+	/** Нужно-ли отображать кнопку "Показать еще". */
+	const [needShowMoreMoviesBtn, setNeedShowMoreMoviesBtn] = React.useState(false);
 
-	/** Отобразить кнопку "Показать еще", если приходит больше 3-ех карточек фильма. */
+	/** Получить список всех карточек. */
 	React.useEffect(() => {
-		if (props.cards.length > 3) {
-			setNeedShowMoreMoviesBtn(true);
+		async function fetchMoviesList() {
+			try {
+				await setMoviesList(props.moviesList);
+			} catch (err) {
+				console.log(err);
+			}
 		}
-	}, [props.cards]);
+		fetchMoviesList();
+	}, [props.moviesList]);
 
-	/** Установка слушателя ширины экрана устройства. */
+	/** Настройка отрисовки карточек. */
 	React.useEffect(() => {
 		function handleWindowResize() {
 			setTimeout(() => {
-				setWindowWidth(window.innerWidth);
-			},1000);
+				setRenderMoviesCardRules();
+			}, 100);
 		}
 
 		window.addEventListener('resize', handleWindowResize);
-			calcStartCardsCount();
+		setRenderMoviesCardRules();
 
 		return () => {
-			window.addEventListener('resize', handleWindowResize);
+			window.removeEventListener('resize', handleWindowResize);
 		}
-	}, [window.innerWidth]);
+	}, []);
+
+	/** Генерация списка данных для рендеринга карточки фильма. */
+	React.useEffect(() => {
+		const localStorageItem = localStorage.getItem('total-movies-cards');
+
+		if (localStorageItem) {
+			props.onVisitedUser(true);
+			setTotalMoviesCards(Number(localStorageItem));
+		}
+
+		setMoviesCardsList(moviesList.slice(0, totalMoviesCards));
+	},[totalMoviesCards, moviesList]);
 
 	/** Скрыть кнопку "Показать еще", если выведены все результаты запроса. */
 	React.useEffect(() => {
-		if (cardCount > props.cards.length) {
+		if (moviesCardsList.length > 3) {
+			setNeedShowMoreMoviesBtn(true);
+		}
+
+		if (totalMoviesCards > moviesCardsList.length) {
 			setNeedShowMoreMoviesBtn(false);
 		}
-	}, [cardCount]);
 
-	function calcStartCardsCount() {
+	}, [totalMoviesCards, moviesCardsList]);
 
-		if (windowWidth <= 768) {
-			setCardCount(5);
-			localStorage.setItem('card-count', '5');
+	/** Установить правила отрисовки карточек для различных экранов. */
+	function setRenderMoviesCardRules() {
+		if  (props.needShowMoviesCardsList) {
+			setNeedShowMoreMoviesBtn(true);
+		}
+
+		if (window.innerWidth <= 768) {
+			setTotalMoviesCards(5);
 			setShowCardsCountOnClickShowMore(2);
 		}
-		else if (windowWidth > 768 && windowWidth < 1280) {
-			setCardCount(8);
-			localStorage.setItem('card-count', '8');
+		else if (window.innerWidth > 768 && window.innerWidth < 1280) {
+			setTotalMoviesCards(8);
 			setShowCardsCountOnClickShowMore(2);
 		}
-		else if (windowWidth >= 1280) {
-			setCardCount(12);
-			localStorage.setItem('card-count', '12');
+		else if (window.innerWidth >= 1280) {
 			setShowCardsCountOnClickShowMore(3);
+			setTotalMoviesCards(12);
 		}
 	}
 
-	/** Обработчик клика по кнопке "Показать еще". */
-	function handleClickShowMoreBtn() {
-		if (cardCount >= props.cards.length) {
-			setNeedShowMoreMoviesBtn(false);
-			return;
-		}
-		setCardCount(cardCount + showCardsCountOnClickShowMore);
-		localStorage.setItem('card-count', String(cardCount + showCardsCountOnClickShowMore));
-
-	}
-	/** Преобразование часов фильма в человекочитаемый формат. */
+		/** Преобразование часов фильма в человекочитаемый формат. */
 	function convertDuration(duration) {
 		const hours = Math.round(duration / 60) + 'ч';
 		const minutes = duration % 60 + 'м';
@@ -86,50 +100,68 @@ export default function MoviesCardList(props) {
 		return hours + ' ' + minutes;
 	}
 
-	/**
-	 * Сколько карточек нужно отображать при отрисовке страницы (на разной ширине окна).
-	 * Сколько карточек нужно отображать при нажатии на кнопу "Показать еще".
-	 */
+	/** Обработчик клика по кнопке "Показать еще". */
+	function handleShowMoreBtnClick() {
+		if (totalMoviesCards > moviesCardsList.length) {
+			setNeedShowMoreMoviesBtn(false);
+			return;
+		}
 
+		const currentMoviesCount = totalMoviesCards + showCardsCountOnClickShowMore;
+		setTotalMoviesCards(currentMoviesCount);
+		localStorage.setItem('total-movies-cards', currentMoviesCount);
+	}
 
 	return (
-		<div className={!props.needShowMoviesCards ? 'movies-card-list movies-card-list_empty' : ''}>
+		<>
+			{/* Прелоудер. */}
 			{props.needShowPreloader &&
 				<Preloader />
 			}
 
-			{props.needShowErrorMsg &&
-				<p>ERROR</p>
+			{/* ОШИБКА: Ничего не найдено. */}
+			{props.needShowNotFoundMsg &&
+				<p className="error-msg">
+					Ничего не найдено
+				</p>
 			}
 
-			{props.needShowMoviesCards &&
-			<>
-				<ul className="movies-list">
-					{
-						props.cards.slice(0, cardCount).map((film) => (
-							<MoviesCard
-								image={'https://api.nomoreparties.co' + film.image.url}
-								key={film.id}
-								title={film.nameRU}
-								duration={convertDuration(film.duration)}
-							/>
-						))
-					}
-				</ul>
+			{/* ОШИБКА: Проблема с соединением. */}
+			{props.needShowApiErrorMsg &&
+			<p className="error-msg">
+				Во время запроса произошла ошибка.
+				Возможно, проблема с соединением или сервер недоступен.
+				Подождите немного и попробуйте ещё раз
+			</p>
+			}
 
-				{needShowMoreMoviesBtn &&
+			{/* Список карточек фильмов. */}
+			<ul className="movies-list">
+				{props.needShowMoviesCardsList &&
+					moviesCardsList.map((movie) => (
+						<MoviesCard
+							key={movie.id}
+							image={'https://api.nomoreparties.co' + movie.image.url}
+							title={movie.nameRU}
+							duration={convertDuration(movie.duration)}
+						/>
+					))
+				}
+			</ul>
+
+			{/* Кнопка "Показать еще". */}
+			{needShowMoreMoviesBtn &&
 				<div className="movies-list__show-more-wrapper">
 					<button
 						className="movies-list__show-more-btn"
-						onClick={handleClickShowMoreBtn}
+						onClick={handleShowMoreBtnClick}
 					>
 						Ещё
 					</button>
 				</div>
-				}
-			</>
 			}
-		</div>
+
+		</>
 
 	);
 }

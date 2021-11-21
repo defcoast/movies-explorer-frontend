@@ -8,47 +8,17 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import React from "react";
 import NotFound from "../NotFound/NotFound";
-import {getFilms} from "../../utils/MoviesApi";
 
 function App() {
-    /** Массив со всеми карточками фильмов. */
-    const [moviesCards, setMoviesCards] = React.useState([]);
 
-    /** Нужно-ли отображать карточки фильмов. */
-    const [needShowMoviesCards, setNeedShowMoviesCards] = React.useState(false);
+    /** Обработчик отправки формы регистрации. */
+    function handleRegisterSubmit(name, email, password) {
+        //отправляем данные в API.
+    }
 
-    /** Нужно-ли отображать прелоудер. */
-    const [needShowPreloader, setNeedShowPreloader] = React.useState(false);
-
-    /** Нужно-ли выводить сообщение об ошибке". */
-    const [needShowErrorMsg, setNeedShowErrorMsg] = React.useState(false);
-
-    /** Получение всех карточке фильмов из API. */
-    React.useEffect( () => {
-        async function fetchMoviesAPI() {
-            if (needShowMoviesCards) {
-                try {
-                    setNeedShowPreloader(true);
-                    const film = await getFilms();
-                    setMoviesCards(film);
-                    setNeedShowPreloader(false);
-                } catch (err) {
-                    console.log(err)
-                    setNeedShowErrorMsg(true);
-                }
-            }
-        }
-
-        fetchMoviesAPI();
-
-    }, [needShowMoviesCards]);
-
-    function showCards() {
-        setNeedShowPreloader(true);
-        if (moviesCards) {
-            setNeedShowMoviesCards(true);
-            setNeedShowPreloader(false);
-        }
+    /** Обработчик отправки формы авторизации. */
+    function handleLoginSubmit(email, password) {
+        //отправляем данные в API.
     }
 
   return (
@@ -59,13 +29,7 @@ function App() {
           </Route>
 
           <Route path="/movies">
-              <Movies
-                  cards={moviesCards}
-                  needShowMoviesCards={needShowMoviesCards}
-                  needShowPreloader={needShowPreloader}
-                  needShowErrorMsg={needShowErrorMsg}
-                  onSubmit={showCards}
-              />
+              <Movies/>
           </Route>
 
           <Route path="/saved-movies">
@@ -77,11 +41,15 @@ function App() {
           </Route>
 
           <Route path="/signin">
-              <Login />
+              <Login
+                  onLogin={handleLoginSubmit}
+              />
           </Route>
 
           <Route path="/signup">
-              <Register />
+              <Register
+                  onRegister={handleRegisterSubmit}
+              />
           </Route>
 
           <Route path="*">
