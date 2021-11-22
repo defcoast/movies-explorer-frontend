@@ -24,7 +24,7 @@
 	border-radius: 30px;
 	border: none;
 	cursor: pointer;
-	display: none;
+	display: flex;
 }
 
 .remove {

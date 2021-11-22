@@ -8,17 +8,34 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import React from "react";
 import NotFound from "../NotFound/NotFound";
+import {loginUser, registerUser} from "../../utils/MainApi";
 
 function App() {
-
     /** Обработчик отправки формы регистрации. */
-    function handleRegisterSubmit(name, email, password) {
-        //отправляем данные в API.
+   async function handleRegisterSubmit(name, email, password) {
+        // Отправляем данные в API.
+        try {
+            const userData = await registerUser(name, email, password);
+        } catch (err) {
+
+        }
     }
 
     /** Обработчик отправки формы авторизации. */
-    function handleLoginSubmit(email, password) {
-        //отправляем данные в API.
+    async function handleLoginSubmit(email, password) {
+        // Отправляем данные в API.
+        try {
+            const userData = await loginUser(email, password);
+
+            if (userData.token) {
+                localStorage.setItem('token', userData.token);
+                return userData;
+            } else {
+                console.log('неверный пароль');
+            }
+        } catch (err) {
+            console.log(err, 'Пользователь не найден');
+        }
     }
 
   return (

@@ -1,9 +1,9 @@
 import React from "react";
-import './MoviesCardList.css';
-import MoviesCard from "../MoviesCard/MoviesCard";
-import Preloader from "../../others/Preloader/Preloader";
+import '../movies/MoviesCardList/MoviesCardList.css';
+import MoviesCard from "../movies/MoviesCard/MoviesCard";
+import Preloader from "../others/Preloader/Preloader";
 
-export default function MoviesCardList(props) {
+export default function SavedMoviesCardList(props) {
 	/** Список всех Фильмов. */
 	const [moviesList, setMoviesList] = React.useState(props.moviesList);
 
@@ -91,7 +91,7 @@ export default function MoviesCardList(props) {
 		}
 	}
 
-		/** Преобразование часов фильма в человекочитаемый формат. */
+	/** Преобразование часов фильма в человекочитаемый формат. */
 	function convertDuration(duration) {
 		const hours = Math.round(duration / 60) + 'ч';
 		const minutes = duration % 60 + 'м';
@@ -111,18 +111,19 @@ export default function MoviesCardList(props) {
 		localStorage.setItem('total-movies-cards', currentMoviesCount);
 	}
 
+
 	return (
 		<>
 			{/* Прелоудер. */}
 			{props.needShowPreloader &&
-				<Preloader />
+			<Preloader />
 			}
 
 			{/* ОШИБКА: Ничего не найдено. */}
 			{props.needShowNotFoundMsg &&
-				<p className="error-msg">
-					Ничего не найдено
-				</p>
+			<p className="error-msg">
+				Ничего не найдено
+			</p>
 			}
 
 			{/* ОШИБКА: Проблема с соединением. */}
@@ -137,33 +138,36 @@ export default function MoviesCardList(props) {
 			{/* Список карточек фильмов. */}
 			<ul className="movies-list">
 				{props.needShowMoviesCardsList &&
-					moviesCardsList.map((movie) => (
-						<a
-							href={movie.trailerLink}
-							key={movie.id}
-							className="movies-list__link"
-						>
-							<MoviesCard
-								image={'https://api.nomoreparties.co' + movie.image.url}
-								title={movie.nameRU}
-								duration={convertDuration(movie.duration)}
-								movie={movie}
-							/>
-						</a>
-					))
+				moviesCardsList.map((movie) => (
+					<a
+						href={movie.trailerLink}
+						key={'saved-movie_' + movie._id}
+						className="movies-list__link"
+					>
+						<MoviesCard
+							image={movie.image}
+							title={movie.nameRU}
+							duration={convertDuration(movie.duration)}
+							movie={movie}
+							savedMovies={true}
+							moviesList={props.moviesList}
+							onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
+						/>
+					</a>
+				))
 				}
 			</ul>
 
 			{/* Кнопка "Показать еще". */}
 			{needShowMoreMoviesBtn &&
-				<div className="movies-list__show-more-wrapper">
-					<button
-						className="movies-list__show-more-btn"
-						onClick={handleShowMoreBtnClick}
-					>
-						Ещё
-					</button>
-				</div>
+			<div className="movies-list__show-more-wrapper">
+				<button
+					className="movies-list__show-more-btn"
+					onClick={handleShowMoreBtnClick}
+				>
+					Ещё
+				</button>
+			</div>
 			}
 
 		</>

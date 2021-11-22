@@ -3,15 +3,15 @@ import './MoviesCard.css';
 import CardButton from "../CardButton/CardButton";
 
 export default function MoviesCard(props) {
-	const typeBtn = {
-		save   : 'save',
-		saved  : 'saved',
-		remove : 'remove',
-	};
-
 	return (
 		<li className="card">
-			<CardButton className="card__button" type={typeBtn.save} />
+			<CardButton
+				className="card__button"
+				movie={props.movie}
+				savedMovies={props.savedMovies}
+				movieList={props.moviesList}
+				onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
+			/>
 			<img
 				src={props.image}
 				alt="Момент из фильма"
