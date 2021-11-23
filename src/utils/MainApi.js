@@ -1,6 +1,5 @@
 const baseURL = 'https://api.diplom.nomoredomains.rocks';
 const token = localStorage.getItem('token');
-console.log(token)
 
 /** Сохранить выбранную карточку с фильмом. */
 export async function saveMovieCard(movie) {
@@ -92,11 +91,11 @@ export async function getSavedMovies() {
 	throw new Error('Ошибка загрузки фильмов');
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(jwt) {
 	const response = await fetch(baseURL + '/users/me', {
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization" : `Bearer ${token}`,
+			"Authorization" : `Bearer ${jwt}`,
 		}
 	});
 
@@ -105,4 +104,24 @@ export async function getCurrentUser() {
 	}
 
 	throw new Error('Ошибка загрузки пользовательских данных');
+}
+
+export async function updateProfile(name, email, jwt) {
+	const response = await fetch(baseURL + '/users/me',{
+		method: 'PATCH',
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization" : `Bearer ${jwt}`,
+		},
+		body: JSON.stringify({
+			name: name,
+			email: email,
+		})
+	});
+
+	if (response.ok) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка обновления пользовательских данных');
 }

@@ -6,11 +6,13 @@ import AboutMe from "../AboutMe/AboutMe";
 import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 
-export default function Main() {
+export default function Main(props) {
 	return (
 		<>
 			<main className="main">
-				<Header />
+				<Header
+					loggedIn={props.loggedIn}
+				/>
 				<Promo />
 				<AboutProject />
 				<Techs />

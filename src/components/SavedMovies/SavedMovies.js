@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 import SavedMoviesCardList from "../SavedMoviesCardList/SavedMoviesCardList";
 import {getSavedMovies} from "../../utils/MainApi";
 
-export default function Movies() {
+export default function Movies(props) {
 	/** Список всех фильмов полученных с сервера. */
 	const [savedMoviesList, setSavedMoviesList] = React.useState([]);
 
@@ -68,7 +68,9 @@ export default function Movies() {
 
 	return (
 		<section className="movies">
-			<Header />
+			<Header
+				loggedIn={props.loggedIn}
+			/>
 			<SearchForm
 				onSubmit={handleSubmit}
 			/>

@@ -29,8 +29,50 @@
 	font-weight: 500;
 }
 
+.navigation__auth-buttons {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+}
+
 .navigation__signin-btn {
 	text-decoration: none;
+}
+
+.navigation__signup-link {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	color: #000;
+	text-decoration: none;
+}
+
+.navigation__account-btn {
+	padding: 7px 12px 7px 19px;
+	border: 2px solid #aaa;
+	box-sizing: border-box;
+	border-radius: 50px;
+	cursor: pointer;
+	text-decoration: none;
+	background-color: #fff;
+}
+
+.navigation__account-btn-inner {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 1.14;
+	display: flex;
+	align-items: center;
+	color: #000;
+}
+
+.navigation__account-btn-inner:before {
+	content: url('../../images/icons/account.svg');
+	position: relative;
+	right: 7px;
 }
 
 @media screen and (max-width: 1023px) {
@@ -67,6 +109,7 @@
 		line-height: 1.22;
 		text-align: center;
 		color: #000;
+		text-decoration: none;
 	}
 
 	.navigation__link_active {

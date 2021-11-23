@@ -7,7 +7,7 @@ import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 import {getFilms} from "../../../utils/MoviesApi";
 
-export default function Movies() {
+export default function Movies(props) {
 	/** Список всех фильмов полученных с сервера. */
 	const [moviesList, setMoviesList] = React.useState([]);
 
@@ -60,7 +60,9 @@ export default function Movies() {
 
 	return (
 		<section className="movies">
-			<Header />
+			<Header
+				loggedIn={props.loggedIn}
+			/>
 			<SearchForm
 				onSubmit={handleSubmit}
 			/>

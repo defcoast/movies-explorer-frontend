@@ -9,6 +9,7 @@ Header.defaultProps = {
 };
 
 export default function Header(props) {
+
 	return (
 		<header className={props.showNavigation ? 'header' : ' header header_type_without-nav'}>
 			<Link to="/">
@@ -16,7 +17,9 @@ export default function Header(props) {
 			</Link>
 
 			{props.showNavigation &&
-				<Navigation />
+				<Navigation
+					loggedIn={props.loggedIn}
+				/>
 			}
 		</header>
 	);

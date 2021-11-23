@@ -134,7 +134,7 @@ export default function Login(props) {
 							color="black"
 							className={!isValidForm ? 'login__button button_disabled' : 'login__button'}
 						>
-							Зарегистрироваться
+							Войти
 						</Button>
 							<span className="login__text">
 							Ещё не зарегистрированы?&nbsp;
