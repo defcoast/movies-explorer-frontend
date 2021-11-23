@@ -19,6 +19,9 @@ export default function MoviesCardList(props) {
 	/** Нужно-ли отображать кнопку "Показать еще". */
 	const [needShowMoreMoviesBtn, setNeedShowMoreMoviesBtn] = React.useState(false);
 
+	// console.log(moviesCardsList)
+
+
 	/** Получить список всех карточек. */
 	React.useEffect(() => {
 		async function fetchMoviesList() {
@@ -111,6 +114,16 @@ export default function MoviesCardList(props) {
 		localStorage.setItem('total-movies-cards', currentMoviesCount);
 	}
 
+	/** Проверка, есть ли данный фильм в списке сохраненных. */
+	function displaySavedMovies(movie) {
+		let result;
+		props.savedMoviesList.forEach((savedItem) => {
+			result = Number(savedItem.movieId) === movie.id;
+		});
+
+		return result
+	}
+
 	return (
 		<>
 			{/* Прелоудер. */}
@@ -148,6 +161,8 @@ export default function MoviesCardList(props) {
 								title={movie.nameRU}
 								duration={convertDuration(movie.duration)}
 								movie={movie}
+								savedMoviesList={props.savedMoviesList}
+								isSavedMovies={displaySavedMovies(movie)}
 							/>
 						</a>
 					))

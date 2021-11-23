@@ -13,12 +13,6 @@ export default function SavedMoviesCardList(props) {
 	/** Список карточек готовых к отрисовке. */
 	const [moviesCardsList, setMoviesCardsList] = React.useState([]);
 
-	/** Количество отображаемых карточек при клике на кнопку "Показать еще". */
-	const [showCardsCountOnClickShowMore, setShowCardsCountOnClickShowMore] = React.useState(null);
-
-	/** Нужно-ли отображать кнопку "Показать еще". */
-	const [needShowMoreMoviesBtn, setNeedShowMoreMoviesBtn] = React.useState(false);
-
 	/** Получить список всех карточек. */
 	React.useEffect(() => {
 		async function fetchMoviesList() {
@@ -52,41 +46,21 @@ export default function SavedMoviesCardList(props) {
 		const localStorageItem = localStorage.getItem('total-movies-cards');
 
 		if (localStorageItem) {
-			props.onVisitedUser(true);
 			setTotalMoviesCards(Number(localStorageItem));
 		}
 
 		setMoviesCardsList(moviesList.slice(0, totalMoviesCards));
 	},[totalMoviesCards, moviesList, props]);
 
-	/** Скрыть кнопку "Показать еще", если выведены все результаты запроса. */
-	React.useEffect(() => {
-		if (moviesCardsList.length > 3) {
-			setNeedShowMoreMoviesBtn(true);
-		}
-
-		if (totalMoviesCards > moviesCardsList.length) {
-			setNeedShowMoreMoviesBtn(false);
-		}
-
-	}, [totalMoviesCards, moviesCardsList]);
-
 	/** Установить правила отрисовки карточек для различных экранов. */
 	function setRenderMoviesCardRules() {
-		if  (props.needShowMoviesCardsList) {
-			setNeedShowMoreMoviesBtn(true);
-		}
-
 		if (window.innerWidth <= 768) {
 			setTotalMoviesCards(5);
-			setShowCardsCountOnClickShowMore(2);
 		}
 		else if (window.innerWidth > 768 && window.innerWidth < 1280) {
 			setTotalMoviesCards(8);
-			setShowCardsCountOnClickShowMore(2);
 		}
 		else if (window.innerWidth >= 1280) {
-			setShowCardsCountOnClickShowMore(3);
 			setTotalMoviesCards(12);
 		}
 	}
@@ -98,19 +72,6 @@ export default function SavedMoviesCardList(props) {
 
 		return hours + ' ' + minutes;
 	}
-
-	/** Обработчик клика по кнопке "Показать еще". */
-	function handleShowMoreBtnClick() {
-		if (totalMoviesCards > moviesCardsList.length) {
-			setNeedShowMoreMoviesBtn(false);
-			return;
-		}
-
-		const currentMoviesCount = totalMoviesCards + showCardsCountOnClickShowMore;
-		setTotalMoviesCards(currentMoviesCount);
-		localStorage.setItem('total-movies-cards', currentMoviesCount);
-	}
-
 
 	return (
 		<>
@@ -137,8 +98,7 @@ export default function SavedMoviesCardList(props) {
 
 			{/* Список карточек фильмов. */}
 			<ul className="movies-list">
-				{props.needShowMoviesCardsList &&
-				moviesCardsList.map((movie) => (
+				{moviesCardsList.map((movie) => (
 					<a
 						href={movie.trailerLink}
 						key={'saved-movie_' + movie._id}
@@ -149,27 +109,13 @@ export default function SavedMoviesCardList(props) {
 							title={movie.nameRU}
 							duration={convertDuration(movie.duration)}
 							movie={movie}
-							savedMovies={true}
+							isSavedMovies={true}
 							moviesList={props.moviesList}
 							onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
 						/>
 					</a>
-				))
-				}
+				))}
 			</ul>
-
-			{/* Кнопка "Показать еще". */}
-			{needShowMoreMoviesBtn &&
-			<div className="movies-list__show-more-wrapper">
-				<button
-					className="movies-list__show-more-btn"
-					onClick={handleShowMoreBtnClick}
-				>
-					Ещё
-				</button>
-			</div>
-			}
-
 		</>
 
 	);

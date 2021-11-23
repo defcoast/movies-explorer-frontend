@@ -4,6 +4,7 @@ import {saveMovieCard} from "../../../utils/MainApi";
 import {removeMovieCard} from "../../../utils/MainApi";
 
 export default function CardButton(props) {
+	// console.log(props.movie)
 	const ButtonsTypesList = {
 		save   : 'save',
 		saved  : 'saved',
@@ -38,13 +39,26 @@ export default function CardButton(props) {
 		e.preventDefault();
 
 		// Отправляем запрос на удаление сохраненного фильма
-		removeMovieCard(props.movie._id);
-		props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
+		if (props.movie._id) {
+			removeMovieCard(props.movie._id);
+			console.log(props.movie)
+			props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
+		} else {
+
+				props.savedMoviesList.forEach((item) => {
+
+					if (Number(item.movieId) === props.movie.id) {
+						removeMovieCard(item._id);
+						// setButtonType(ButtonsTypesList.save);
+
+					}
+				});
+		}
 	}
 
 	return (
 		<>
-			{(buttonType === ButtonsTypesList.save && !props.savedMovies) &&
+			{(buttonType === ButtonsTypesList.save && !props.isSavedMovies) &&
 			<form action="#" onClick={handleSaveBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.save}
@@ -54,7 +68,7 @@ export default function CardButton(props) {
 			</form>
 			}
 
-			{(buttonType === ButtonsTypesList.saved || props.savedMovies) &&
+			{(buttonType === ButtonsTypesList.saved || props.isSavedMovies) &&
 			<form action="" onClick={handleSavedBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.saved}
@@ -62,7 +76,7 @@ export default function CardButton(props) {
 			</form>
 			}
 
-			{(buttonType === ButtonsTypesList.remove || props.savedMovies) &&
+			{(buttonType === ButtonsTypesList.remove || props.isSavedMovies) &&
 			<form action="#" onClick={handleRemoveBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.remove}

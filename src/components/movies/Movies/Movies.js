@@ -72,6 +72,7 @@ export default function Movies(props) {
 				needShowPreloader={needShowPreloader}
 				needShowNotFoundMsg={needShowNotFoundMsg}
 				needShowApiErrorMsg={needShowApiErrorMsg}
+				savedMoviesList={props.savedMoviesList}
 				onVisitedUser={handleVisitedUser}
 			/>
 			<Footer />

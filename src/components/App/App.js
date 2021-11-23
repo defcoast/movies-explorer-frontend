@@ -8,8 +8,9 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import React from "react";
 import NotFound from "../NotFound/NotFound";
-import {getCurrentUser, loginUser, registerUser, updateProfile} from "../../utils/MainApi";
+import {getCurrentUser, getSavedMovies, loginUser, registerUser, updateProfile} from "../../utils/MainApi";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
+import ProtectedRoute from "../../utils/ProtectedRoute";
 
 
 
@@ -27,6 +28,43 @@ function App() {
     const [updateProfileErrorConnectApiMsg, setUpdateProfileErrorConnectApiMsg] = React.useState('');
 
     const [currentUser, setCurrentUser] = React.useState({});
+
+    /** Список всех сохраненных фильмов. */
+    const [savedMoviesList, setSavedMoviesList] = React.useState([]);
+
+    /** Нужно-ли отображать прелоудер. */
+    const [needShowPreloader, setNeedShowPreloader] = React.useState(false);
+
+    /** Нужно-ли отображать сообщение "Ничего не найдено". */
+    const [needShowNotFoundMsg, setNeedShowNotFoundMsg] = React.useState(false);
+
+    /** Нужно-ли отображать сообщение "Ошибка сервера". */
+    const [needShowApiErrorMsg, setNeedShowApiErrorMsg] = React.useState(false);
+
+
+    /** Подключения к API. Установка прелоудера. */
+    React.useEffect(() => {
+        async function fetchMoviesAPI() {
+
+            try{
+                setNeedShowPreloader(true);
+                const data = await getSavedMovies();
+
+                if (data.length > 0) {
+                    setSavedMoviesList(data);
+                }
+                else  {
+                    setNeedShowNotFoundMsg(true);
+                }
+
+                setNeedShowPreloader(false);
+            } catch (err) {
+                setNeedShowPreloader(false);
+                setNeedShowApiErrorMsg(true);
+            }
+        }
+        fetchMoviesAPI();
+    },[]);
 
     React.useEffect(() => {
         async function checkLoggedUser() {
@@ -94,7 +132,6 @@ function App() {
         if (jwt) {
             try {
                 const updatedUserData = await updateProfile(name, email, jwt);
-                console.log(updatedUserData)
 
                 if (updatedUserData) {
                     setCurrentUser(updatedUserData);
@@ -106,36 +143,48 @@ function App() {
         }
     }
 
+    /** Обработчик удаления сохраненной карточки. */
+    function handleRemoveSavedMovieCard(sortedMoviesList) {
+        setSavedMoviesList(sortedMoviesList)
+    }
+
   return (
     <div className="App">
         <CurrentUserContext.Provider value={currentUser}>
             <Switch>
+
                 <Route exact path="/" >
                     <Main
                         loggedIn={loggedIn}
                     />
                 </Route>
 
-                <Route path="/movies">
-                    <Movies
-                        loggedIn={loggedIn}
-                    />
-                </Route>
+                <ProtectedRoute
+                    path='/movies'
+                    loggedIn={loggedIn}
+                    component={Movies}
+                    savedMoviesList={savedMoviesList}
+                />
 
-                <Route path="/saved-movies">
-                    <SavedMovies
-                        loggedIn={loggedIn}
-                    />
-                </Route>
+                <ProtectedRoute
+                    path='/saved-movies'
+                    component={SavedMovies}
+                    loggedIn={loggedIn}
+                    savedMoviesList={savedMoviesList}
+                    needShowPreloader={needShowPreloader}
+                    needShowNotFoundMsg={needShowNotFoundMsg}
+                    needShowApiErrorMsg={needShowApiErrorMsg}
+                    onRemoveSavedMovieCard={handleRemoveSavedMovieCard}
+                />
 
-                <Route path="/profile">
-                    <Profile
-                        loggedIn={loggedIn}
-                        currentUser={currentUser}
-                        onUpdateProfile={handleUpdateProfile}
-                        updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
-                    />
-                </Route>
+                <ProtectedRoute
+                    path='/profile'
+                    component={Profile}
+                    loggedIn={loggedIn}
+                    currentUser={currentUser}
+                    onUpdateProfile={handleUpdateProfile}
+                    updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
+                />
 
                 <Route path="/signin">
                     <Login
