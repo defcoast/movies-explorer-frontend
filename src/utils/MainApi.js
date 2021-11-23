@@ -91,3 +91,18 @@ export async function getSavedMovies() {
 
 	throw new Error('Ошибка загрузки фильмов');
 }
+
+export async function getCurrentUser() {
+	const response = await fetch(baseURL + '/users/me', {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization" : `Bearer ${token}`,
+		}
+	});
+
+	if (response.status === 201 || response.status === 200) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка загрузки пользовательских данных');
+}

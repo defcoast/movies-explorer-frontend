@@ -109,6 +109,22 @@
 	text-decoration: none;
 }
 
+.register__error-msg {
+	margin-top: 10px;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 1.2;
+	color: #ff4062;
+}
+
+.register__connect-err-msg {
+	text-align: center;
+	margin-bottom: 5px;
+	color: red;
+}
+
 @media screen and (max-width: 767px) {
 	.register__title {
 		align-self: center;

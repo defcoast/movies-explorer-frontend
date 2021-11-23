@@ -14,25 +14,84 @@ export default function Register(props) {
 	/** Пароль пользователя. */
 	const [password, setPassword ] = React.useState('');
 
+	/** Коснулся-ли пользователь поля "Имя". */
+	const [nameDirty, setNameDirty] = React.useState(false);
+
+	/** Коснулся-ли пользователь поля "Email". */
+	const [emailDirty, setEmailDirty] = React.useState(false);
+
+	/** Коснулся-ли пользователь поля "пароль". */
+	const [passwordDirty, setPasswordDirty] = React.useState(false);
+
+	/** Текст ошибки для поля "Имя". */
+	const [nameError, setNameError] = React.useState('');
+
+	/** Текст ошибки для поля "E-mail". */
+	const [emailError, setEmailError] = React.useState('');
+
+	/** Текст ошибки для поля "Пароль". */
+	const [passwordError, setPasswordError] = React.useState('');
+
+	/** Валидная-ли форма. */
+	const [isValidForm, setIsValidForm] = React.useState(false);
+
+	/** Валидная-ли форма. */
+	React.useEffect(() => {
+		if (!(nameDirty && emailDirty && passwordDirty)) {
+			setIsValidForm(false);
+		}
+		else if (nameError || emailError || passwordError) {
+			setIsValidForm(false);
+		} else {
+			setIsValidForm(true);
+		}
+	}, [nameError, emailError, passwordError, nameDirty, emailDirty, passwordDirty]);
+
 	/** Обработчик изменения имени пользователя. */
 	function handleChangeName(e) {
-		setName(e.target.value);
+		const targetName = e.target.value
+		setNameDirty(true);
+		setName(targetName);
+
+		const re = /^[a-zа-яё\s\-]+$/;
+		if (targetName.length < 2 || targetName.length > 30) {
+			setNameError('Имя не может быть меньше 2-х и больше 30 символов');
+		}
+		else if (!re.test(String(targetName).toLowerCase())) {
+			setNameError('Некорректное имя');
+		} else {
+			setNameError('');
+		}
 	}
 
 	/** Обработчик изменения электронной почты пользователя. */
 	function handleChangeEmail(e) {
+		setEmailDirty(true);
 		setEmail(e.target.value);
+
+		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!re.test(String(e.target.value).toLowerCase())) {
+			setEmailError('Некорректный email');
+		} else {
+			setEmailError('');
+		}
 	}
 
 	/** Обработчик изменения пароля пользователя. */
 	function handleChangePassword(e) {
-		setPassword(e.target.value);
+		const targetPassword = e.target.value
+		setPasswordDirty(true);
+		setPassword(targetPassword);
+
+		if (targetPassword.length < 1) {
+			setPasswordError('Пароль обязателен для заполнения');
+		}
 	}
 
 	/** Обработчик отправки формы на сервер. */
 	function handleFormSubmit(e) {
 		e.preventDefault();
-		props.onRegister(name, email, password);
+		props.onRegister(name, email, password, true);
 	}
 
 	return (
@@ -60,9 +119,15 @@ export default function Register(props) {
 										type="text"
 										className="register__input"
 										id="name"
+										name="name"
 										required
 										onChange={handleChangeName}
 									/>
+									{(nameDirty && nameError) &&
+										<div className="register__error-msg">
+											{nameError}
+										</div>
+									}
 								</li>
 
 								<li className="register__item">
@@ -73,9 +138,15 @@ export default function Register(props) {
 										type="mail"
 										className="register__input"
 										id="email"
+										name="email"
 										required
 										onChange={handleChangeEmail}
 									/>
+									{(emailDirty && emailError) &&
+									<div className="register__error-msg">
+										{emailError}
+									</div>
+									}
 								</li>
 
 								<li className="register__item">
@@ -86,17 +157,27 @@ export default function Register(props) {
 										type="password"
 										className="register__input"
 										id="password"
+										name="password"
 										required
 										onChange={handleChangePassword}
 									/>
+									{(passwordDirty && passwordError) &&
+									<span className="register__error-msg">
+										{passwordError}
+									</span>
+									}
 								</li>
 							</ul>
 						</div>
 
 						<div className="register__links">
+							<span className="register__connect-err-msg">
+								{props.registerErrorConnectApiMsg}
+							</span>
 							<Button
+								disabled={!isValidForm}
 								color="black"
-								className="register__button"
+								className={!isValidForm ? 'register__button button_disabled' : 'register__button'}
 							>
 								Зарегистрироваться
 							</Button>
