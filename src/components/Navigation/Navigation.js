@@ -64,6 +64,7 @@ export default function Navigation(props) {
 			<div className="navigation-mobile">
 				<BurgerMenu>
 					<nav className="navigation__menu">
+						{props.loggedIn &&
 						<ul className="navigation__menu-list">
 							<li className="navigation__menu-item">
 								<NavLink
@@ -96,15 +97,32 @@ export default function Navigation(props) {
 								</NavLink>
 							</li>
 						</ul>
+						}
 
 						<div className="navigation__auth-buttons">
-							<Link className="navigation__signin-btn" to="/signin">
-								<Button
-									color={'black'}
-								>
-									Войти
-								</Button>
+							{!props.loggedIn &&
+								<>
+									<Link className="navigation__signup-link" to="/signup">
+										Регистрация
+									</Link>
+
+									<Link className="navigation__signin-btn" to="/signin">
+										<Button
+											color={'black'}
+										>
+											Войти
+										</Button>
+									</Link>
+								</>
+							}
+
+							{props.loggedIn &&
+							<Link className="navigation__account-btn" to="/profile">
+									<span className="navigation__account-btn-inner">
+										Аккаунт
+									</span>
 							</Link>
+							}
 						</div>
 					</nav>
 				</BurgerMenu>

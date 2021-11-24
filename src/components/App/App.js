@@ -84,7 +84,7 @@ function App() {
             }
         }
         checkLoggedUser();
-    }, [loggedIn]);
+    }, [loggedIn, isRegister]);
 
 
     /** Обработчик отправки формы регистрации. */
@@ -99,7 +99,7 @@ function App() {
             }
         } catch (err) {
             console.log(err, 'Ошибка регистрации');
-            setRegisterErrorConnectApiMsg('Ошибка регистрации');
+            setLoginErrorConnectApiMsg('Ошибка регистрации');
         }
     }
 
