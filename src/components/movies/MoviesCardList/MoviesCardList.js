@@ -19,14 +19,17 @@ export default function MoviesCardList(props) {
 	/** Нужно-ли отображать кнопку "Показать еще". */
 	const [needShowMoreMoviesBtn, setNeedShowMoreMoviesBtn] = React.useState(false);
 
-	// console.log(moviesCardsList)
+	console.log(moviesList)
 
+	React.useEffect(() => {
+		setMoviesList(props.filteredMoviesList)
+	}, [props.needShowMoviesCardsList, props.filteredMoviesList]);
 
 	/** Получить список всех карточек. */
 	React.useEffect(() => {
 		async function fetchMoviesList() {
 			try {
-				await setMoviesList(props.moviesList);
+				setMoviesList(props.moviesList);
 			} catch (err) {
 				console.log(err);
 			}
@@ -48,7 +51,7 @@ export default function MoviesCardList(props) {
 		return () => {
 			window.removeEventListener('resize', handleWindowResize);
 		}
-	}, []);
+	}, [props.needShowMoviesCardsList]);
 
 	/** Генерация списка данных для рендеринга карточки фильма. */
 	React.useEffect(() => {

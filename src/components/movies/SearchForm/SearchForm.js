@@ -3,10 +3,24 @@ import './SearchForm.css'
 import CustomCheckbox from "../../others/CustomCheckbox/CustomCheckbox";
 
 export default function SearchForm(props) {
+	const [searchText, setSearchText] = React.useState('');
+
 	/** Обработчик кнопки отправки поискового запроса. */
 	function handleSubmit(e) {
 		e.preventDefault();
+
 		props.onSubmit(true);
+		props.searchRequest(searchText);
+	}
+
+	/** Обработчик изменения текста в поисковой строке. */
+	function handleSearchTextChange(e) {
+		e.preventDefault();
+		setSearchText(e.target.value);
+	}
+
+	function handleChangeCheckbox(e) {
+		props.isShortMovie(e.target.checked);
 	}
 
 	return (
@@ -23,6 +37,7 @@ export default function SearchForm(props) {
 						placeholder="Фильм"
 						className="search__input"
 						required
+						onChange={handleSearchTextChange}
 					/>
 					<button
 						type="submit"
@@ -30,7 +45,9 @@ export default function SearchForm(props) {
 					/>
 				</div>
 				<div className="search__right-wrapper">
-					<CustomCheckbox />
+					<CustomCheckbox
+						onChange={handleChangeCheckbox}
+					/>
 					Короткометражки
 				</div>
 			</form>

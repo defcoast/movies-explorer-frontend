@@ -23,6 +23,21 @@ export default function Movies(props) {
 	/** Нужно-ли отображать сообщение "Ошибка сервера". */
 	const [needShowApiErrorMsg, setNeedShowApiErrorMsg] = React.useState(false);
 
+	const [searchText, setSearchText] = React.useState('');
+
+	const [filteredMoviesList, setFilteredMoviesList] = React.useState('');
+
+	const [isShortMovie, setIsShortMovie] = React.useState(false);
+
+	React.useEffect(() => {
+		if (isShortMovie) {
+			setFilteredMoviesList(moviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40)));
+		} else {
+			setFilteredMoviesList(moviesList.filter(el => el.nameRU.includes(searchText)));
+		}
+		console.log('search')
+	}, [searchText, isShortMovie]);
+
 	/** Подключения к API. Установка прелоудера. */
 	React.useEffect(() => {
 		async function fetchMoviesAPI() {
@@ -37,7 +52,6 @@ export default function Movies(props) {
 					else  {
 						setNeedShowNotFoundMsg(true);
 					}
-
 					setNeedShowPreloader(false);
 				} catch (err) {
 					setNeedShowPreloader(false);
@@ -50,12 +64,23 @@ export default function Movies(props) {
 
 	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
-		setNeedShowMoviesCardsList(true);
+		if (searchText) {
+			setNeedShowMoviesCardsList(true);
+		}
 	}
 
 	/** Обработчик рендера списка фильмов для пользователей, которые уже были на сайте ранее. */
 	function handleVisitedUser(isVisitedUser) {
 		setNeedShowMoviesCardsList(isVisitedUser);
+	}
+
+	/** Обработчик текста запроса. */
+	function handleSearchRequest(text) {
+		setSearchText(text);
+	}
+
+	function handleIsShortMovie(isShortMovie) {
+		setIsShortMovie(isShortMovie);
 	}
 
 	return (
@@ -65,15 +90,19 @@ export default function Movies(props) {
 			/>
 			<SearchForm
 				onSubmit={handleSubmit}
+				searchRequest={handleSearchRequest}
+				isShortMovie={handleIsShortMovie}
 			/>
 			<MoviesCardList
 				moviesList={moviesList}
+				filteredMoviesList={filteredMoviesList}
 				needShowMoviesCardsList={needShowMoviesCardsList}
 				needShowPreloader={needShowPreloader}
 				needShowNotFoundMsg={needShowNotFoundMsg}
 				needShowApiErrorMsg={needShowApiErrorMsg}
 				savedMoviesList={props.savedMoviesList}
 				onVisitedUser={handleVisitedUser}
+				searchText={searchText}
 			/>
 			<Footer />
 		</section>

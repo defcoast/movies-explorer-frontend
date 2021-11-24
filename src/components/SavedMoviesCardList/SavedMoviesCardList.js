@@ -13,6 +13,10 @@ export default function SavedMoviesCardList(props) {
 	/** Список карточек готовых к отрисовке. */
 	const [moviesCardsList, setMoviesCardsList] = React.useState([]);
 
+	React.useEffect(() => {
+		setMoviesList(props.filteredMoviesList)
+	}, [props.needShowMoviesCardsList, props.filteredMoviesList]);
+
 	/** Получить список всех карточек. */
 	React.useEffect(() => {
 		async function fetchMoviesList() {
