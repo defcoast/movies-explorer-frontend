@@ -13,6 +13,7 @@ export default function MoviesCard(props) {
 				onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
 				savedMoviesList={props.savedMoviesList}
 				isSavedMovies={props.isSavedMovies}
+				onSaved={props.onSaved}
 			/>
 			<img
 				src={props.image}

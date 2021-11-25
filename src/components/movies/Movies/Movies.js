@@ -30,13 +30,21 @@ export default function Movies(props) {
 	const [isShortMovie, setIsShortMovie] = React.useState(false);
 
 	React.useEffect(() => {
+		let filteredData;
+		setNeedShowNotFoundMsg(false);
+
 		if (isShortMovie) {
-			setFilteredMoviesList(moviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40)));
+			filteredData = moviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
+			setFilteredMoviesList(filteredData);
 		} else {
-			setFilteredMoviesList(moviesList.filter(el => el.nameRU.includes(searchText)));
+			filteredData = moviesList.filter(el => el.nameRU.includes(searchText));
+			setFilteredMoviesList(filteredData);
 		}
-		console.log('search')
-	}, [searchText, isShortMovie]);
+
+		if (filteredData.length === 0 && needShowMoviesCardsList) {
+			setNeedShowNotFoundMsg(true);
+		}
+	}, [searchText, isShortMovie, needShowMoviesCardsList]);
 
 	/** Подключения к API. Установка прелоудера. */
 	React.useEffect(() => {
@@ -44,13 +52,12 @@ export default function Movies(props) {
 			if (needShowMoviesCardsList) {
 				try{
 					setNeedShowPreloader(true);
+					setNeedShowNotFoundMsg(false);
+
 					const data = await getFilms();
 
 					if (data.length > 0) {
 						setMoviesList(data);
-					}
-					else  {
-						setNeedShowNotFoundMsg(true);
 					}
 					setNeedShowPreloader(false);
 				} catch (err) {
@@ -103,6 +110,9 @@ export default function Movies(props) {
 				savedMoviesList={props.savedMoviesList}
 				onVisitedUser={handleVisitedUser}
 				searchText={searchText}
+				onSaved={props.onSaved}
+				onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
+
 			/>
 			<Footer />
 		</section>

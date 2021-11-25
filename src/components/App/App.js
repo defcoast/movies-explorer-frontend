@@ -12,8 +12,6 @@ import {getCurrentUser, getSavedMovies, loginUser, registerUser, updateProfile} 
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
-
-
 function App() {
     const history = useHistory();
 
@@ -40,6 +38,9 @@ function App() {
 
     /** Нужно-ли отображать сообщение "Ошибка сервера". */
     const [needShowApiErrorMsg, setNeedShowApiErrorMsg] = React.useState(false);
+
+    const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = React.useState('');
+
 
 
     /** Подключения к API. Установка прелоудера. */
@@ -134,6 +135,7 @@ function App() {
                 const updatedUserData = await updateProfile(name, email, jwt);
 
                 if (updatedUserData) {
+                    setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
                     setCurrentUser(updatedUserData);
                 }
             } catch (err) {
@@ -146,6 +148,18 @@ function App() {
     /** Обработчик удаления сохраненной карточки. */
     function handleRemoveSavedMovieCard(sortedMoviesList) {
         setSavedMoviesList(sortedMoviesList)
+    }
+
+    function handleOnSavedMovie(movie) {
+        setSavedMoviesList([...savedMoviesList, movie]);
+    }
+
+    function handleOnChangeSearchSubmit(sortedMoviesList) {
+        setSavedMoviesList(sortedMoviesList);
+    }
+
+    function handleChangeFilter(sortedMoviesList) {
+        setSavedMoviesList(sortedMoviesList);
     }
 
   return (
@@ -164,6 +178,8 @@ function App() {
                     loggedIn={loggedIn}
                     component={Movies}
                     savedMoviesList={savedMoviesList}
+                    onSaved={handleOnSavedMovie}
+                    onRemoveSavedMovieCard={handleRemoveSavedMovieCard}
                 />
 
                 <ProtectedRoute
@@ -175,6 +191,8 @@ function App() {
                     needShowNotFoundMsg={needShowNotFoundMsg}
                     needShowApiErrorMsg={needShowApiErrorMsg}
                     onRemoveSavedMovieCard={handleRemoveSavedMovieCard}
+                    onChangeSearchSubmit={handleOnChangeSearchSubmit}
+                    onChangeFilter={handleChangeFilter}
                 />
 
                 <ProtectedRoute
@@ -184,6 +202,7 @@ function App() {
                     currentUser={currentUser}
                     onUpdateProfile={handleUpdateProfile}
                     updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
+                    successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
                 />
 
                 <Route path="/signin">

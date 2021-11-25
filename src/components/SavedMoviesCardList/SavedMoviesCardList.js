@@ -4,70 +4,14 @@ import MoviesCard from "../movies/MoviesCard/MoviesCard";
 import Preloader from "../others/Preloader/Preloader";
 
 export default function SavedMoviesCardList(props) {
-	/** Список всех Фильмов. */
-	const [moviesList, setMoviesList] = React.useState(props.moviesList);
 
-	/** Количество отображаемых карточек. */
-	const [totalMoviesCards, setTotalMoviesCards] = React.useState(null);
-
-	/** Список карточек готовых к отрисовке. */
-	const [moviesCardsList, setMoviesCardsList] = React.useState([]);
 
 	React.useEffect(() => {
-		setMoviesList(props.filteredMoviesList)
-	}, [props.needShowMoviesCardsList, props.filteredMoviesList]);
-
-	/** Получить список всех карточек. */
-	React.useEffect(() => {
-		async function fetchMoviesList() {
-			try {
-				await setMoviesList(props.moviesList);
-			} catch (err) {
-				console.log(err);
-			}
+		if (props.filteredMoviesList) {
+			props.onChangeSearchSubmit(props.filteredMoviesList);
+			console.log('list',props.filteredMoviesList)
 		}
-		fetchMoviesList();
-	}, [props.moviesList]);
-
-	/** Настройка отрисовки карточек. */
-	React.useEffect(() => {
-		function handleWindowResize() {
-			setTimeout(() => {
-				setRenderMoviesCardRules();
-			}, 100);
-		}
-
-		window.addEventListener('resize', handleWindowResize);
-		setRenderMoviesCardRules();
-
-		return () => {
-			window.removeEventListener('resize', handleWindowResize);
-		}
-	}, []);
-
-	/** Генерация списка данных для рендеринга карточки фильма. */
-	React.useEffect(() => {
-		const localStorageItem = localStorage.getItem('total-movies-cards');
-
-		if (localStorageItem) {
-			setTotalMoviesCards(Number(localStorageItem));
-		}
-
-		setMoviesCardsList(moviesList.slice(0, totalMoviesCards));
-	},[totalMoviesCards, moviesList, props]);
-
-	/** Установить правила отрисовки карточек для различных экранов. */
-	function setRenderMoviesCardRules() {
-		if (window.innerWidth <= 768) {
-			setTotalMoviesCards(5);
-		}
-		else if (window.innerWidth > 768 && window.innerWidth < 1280) {
-			setTotalMoviesCards(8);
-		}
-		else if (window.innerWidth >= 1280) {
-			setTotalMoviesCards(12);
-		}
-	}
+	}, [props.filteredMoviesList, props.moviesList]);
 
 	/** Преобразование часов фильма в человекочитаемый формат. */
 	function convertDuration(duration) {
@@ -102,7 +46,7 @@ export default function SavedMoviesCardList(props) {
 
 			{/* Список карточек фильмов. */}
 			<ul className="movies-list">
-				{moviesCardsList.map((movie) => (
+				{props.moviesList.map((movie) => (
 					<a
 						href={movie.trailerLink}
 						key={'saved-movie_' + movie._id}

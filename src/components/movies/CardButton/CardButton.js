@@ -4,7 +4,6 @@ import {saveMovieCard} from "../../../utils/MainApi";
 import {removeMovieCard} from "../../../utils/MainApi";
 
 export default function CardButton(props) {
-	// console.log(props.movie)
 	const ButtonsTypesList = {
 		save   : 'save',
 		saved  : 'saved',
@@ -14,7 +13,8 @@ export default function CardButton(props) {
 	/** Текущий тип кнопки кнопки. */
 	const [buttonType, setButtonType] = React.useState(ButtonsTypesList.save);
 
-	const [savedMoviesList, setSavedMoviesList] = React.useState([]);
+	// const [isSavedMovies, setIsSavedMovies] = React.useState(false);
+
 
 	/** Обработчик клика по кнопке "Сохранить фильм". */
 	async function handleSaveBtnClick(e) {
@@ -22,37 +22,65 @@ export default function CardButton(props) {
 
 		// Отправляем запрос на сохранение фильма.
 		const result = await saveMovieCard(props.movie);
-		setSavedMoviesList(result)
-		console.log(result);
 		setButtonType(ButtonsTypesList.saved);
+		props.onSaved(result);
 	}
 
 	/** Обработчик клика по кнопке "Фильм сохранен". */
-	function handleSavedBtnClick(e) {
+	async function handleSavedBtnClick(e) {
 		e.preventDefault();
 		setButtonType(ButtonsTypesList.save);
-		removeMovieCard(savedMoviesList._id);
+		// removeMovieCard(props.savedMoviesList._id);
+		if (props.movie._id) {
+			try {
+				await removeMovieCard(props.movie._id);
+				props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
+
+			} catch (err) {
+				setButtonType(ButtonsTypesList.save);
+			}
+
+		}
+		else if (props.movie.id) {
+			props.savedMoviesList.forEach((savedItem) => {
+				if (Number(savedItem.movieId) === props.movie.id) {
+					removeMovieCard(savedItem._id);
+					// const index = props.savedMoviesList.indexOf(savedItem);
+					// const updatedList = props.savedMoviesList.splice(index, 1)
+					// props.onRemoveSavedMovieCard(updatedList);
+				}
+			});
+		}
 	}
 
 	/** Обработчик клика по кнопке "Удалить сохраненный фильм". */
-	function handleRemoveBtnClick(e) {
+	async function handleRemoveBtnClick(e) {
 		e.preventDefault();
+		setButtonType(ButtonsTypesList.save);
 
 		// Отправляем запрос на удаление сохраненного фильма
 		if (props.movie._id) {
-			removeMovieCard(props.movie._id);
-			console.log(props.movie)
-			props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
-		} else {
+			try {
+				await removeMovieCard(props.movie._id);
+				props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
 
-				props.savedMoviesList.forEach((item) => {
+			} catch (err) {
+				setButtonType(ButtonsTypesList.save);
+			}
 
-					if (Number(item.movieId) === props.movie.id) {
-						removeMovieCard(item._id);
-						// setButtonType(ButtonsTypesList.save);
-
+		}
+		else if (props.movie.id) {
+			for (const savedItem of props.savedMoviesList) {
+				if (Number(savedItem.movieId) === props.movie.id) {
+					const data = await removeMovieCard(savedItem._id);
+					if (data) {
+						setButtonType(ButtonsTypesList.save);
 					}
-				});
+					// const index = props.savedMoviesList.indexOf(savedItem);
+					// const updatedList = props.savedMoviesList.splice(index, 1)
+					// props.onRemoveSavedMovieCard(updatedList);
+				}
+			}
 		}
 	}
 

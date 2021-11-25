@@ -10,21 +10,45 @@ export default function Movies(props) {
 
 	const [searchText, setSearchText] = React.useState('');
 
-	const [filteredMoviesList, setFilteredMoviesList] = React.useState('');
-
 	const [isShortMovie, setIsShortMovie] = React.useState(false);
 
+	const [needShowNotFoundMsg, setNeedShowNotFoundMsg] = React.useState(false);
+
+
 	React.useEffect(() => {
+		let filteredData;
+		setNeedShowNotFoundMsg(false);
+
 		if (isShortMovie) {
-			setFilteredMoviesList(props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40)));
+			filteredData = props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
+			props.onChangeFilter(filteredData);
 		} else {
-			setFilteredMoviesList(props.savedMoviesList.filter(el => el.nameRU.includes(searchText)));
+			filteredData = props.savedMoviesList.filter(el => el.nameRU.includes(searchText));
+			props.onChangeFilter(filteredData);
+
 		}
-		console.log('search')
+
+		if (filteredData.length === 0) {
+			setNeedShowNotFoundMsg(true);
+		}
 	}, [searchText, isShortMovie]);
+
 
 	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
+		let filteredData;
+
+		console.log('send')
+		if (isShortMovie) {
+			filteredData = props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
+			props.onChangeFilter(filteredData);
+
+		} else {
+			filteredData = props.savedMoviesList.filter(el => el.nameRU.includes(searchText));
+			// setFilteredMoviesList(filteredData);
+			props.onChangeFilter(filteredData);
+
+		}
 	}
 
 	/** Обработчик текста запроса. */
@@ -49,13 +73,12 @@ export default function Movies(props) {
 			/>
 			<SavedMoviesCardList
 				moviesList={props.savedMoviesList}
-				filteredMoviesList={filteredMoviesList}
 				needShowPreloader={props.needShowPreloader}
-				needShowNotFoundMsg={props.needShowNotFoundMsg}
+				needShowNotFoundMsg={needShowNotFoundMsg}
 				needShowApiErrorMsg={props.needShowApiErrorMsg}
 				onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
 				searchText={searchText}
-
+				onChangeSearchSubmit={props.onChangeSearchSubmit}
 			/>
 			<Footer />
 		</section>

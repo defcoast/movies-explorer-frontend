@@ -153,6 +153,11 @@ export default function Profile(props) {
 					</div>
 
 					<div className="profile__links">
+						{props.successfullyUpdateProfileMsg &&
+							<span>
+								{props.successfullyUpdateProfileMsg}
+							</span>
+						}
 						<button
 							type="submit"
 							disabled={!isValidForm}
