@@ -5,11 +5,13 @@ import {CurrentUserContext} from "../../utils/CurrentUserContext";
 import {Link} from "react-router-dom";
 
 export default function Profile(props) {
+	const currentUser = React.useContext(CurrentUserContext);
+
 	/** Имя пользователя. */
-	const [name, setName] = React.useState(props.currentUser.name);
+	const [name, setName] = React.useState(currentUser.name);
 
 	/** Email пользователя. */
-	const [email, setEmail ] = React.useState(props.currentUser.email);
+	const [email, setEmail ] = React.useState(currentUser.email);
 
 	/** Коснулся-ли пользователь поля "Имя". */
 	const [nameDirty, setNameDirty] = React.useState(false);
@@ -26,13 +28,10 @@ export default function Profile(props) {
 	/** Валидная-ли форма. */
 	const [isValidForm, setIsValidForm] = React.useState(false);
 
-	const currentUser = React.useContext(CurrentUserContext);
-
 	const [updateUserName, setUpdateUserName] = React.useState(currentUser.name);
 
 	const [updateUserEmail, setUpdateUserEmail] = React.useState(currentUser.email);
 
-	console.log(currentUser)
 
 	React.useEffect(() => {
 		if (name === updateUserName || email === updateUserEmail) {
@@ -148,7 +147,7 @@ export default function Profile(props) {
 									type="email"
 									className="profile__input"
 									placeholder={`${updateUserEmail}`}
-									value={email}
+									value={updateUserEmail}
 									id="email"
 									onChange={handleChangeEmail}
 								/>

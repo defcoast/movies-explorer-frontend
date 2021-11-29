@@ -41,8 +41,6 @@ function App() {
 
     const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = React.useState('');
 
-
-
     /** Подключения к API. Установка прелоудера. */
     React.useEffect(() => {
         async function fetchMoviesAPI() {
@@ -131,12 +129,12 @@ function App() {
     async function handleUpdateProfile(name, email) {
         const jwt = localStorage.getItem('token');
         if (jwt) {
+
             try {
                 const updatedUserData = await updateProfile(name, email, jwt);
-
+                setCurrentUser({name, email});
                 if (updatedUserData) {
                     setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
-                    setCurrentUser(updatedUserData);
                 }
             } catch (err) {
                 console.log(err, 'Ошибка обновления пользовательских данных');
@@ -164,7 +162,7 @@ function App() {
 
   return (
     <div className="App">
-        <CurrentUserContext.Provider value={currentUser}>
+        <CurrentUserContext.Provider value={currentUser ? currentUser : ''}>
             <Switch>
 
                 <Route exact path="/" >
