@@ -11,13 +11,14 @@ import NotFound from "../NotFound/NotFound";
 import {getCurrentUser, getSavedMovies, loginUser, registerUser, updateProfile} from "../../utils/MainApi";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
 import ProtectedRoute from "../../utils/ProtectedRoute";
+import AuthProtectedRoute from "../../utils/AuthProtectedRoute";
 
 function App() {
     const history = useHistory();
 
     const [isRegister, setIsRegister] = React.useState(false);
 
-    const [loggedIn, setLoggedIn] = React.useState(false);
+    const [loggedIn, setLoggedIn] = React.useState(Boolean(localStorage.getItem('token')));
 
     const [registerErrorConnectApiMsg, setRegisterErrorConnectApiMsg] = React.useState('');
 
@@ -40,6 +41,8 @@ function App() {
     const [needShowApiErrorMsg, setNeedShowApiErrorMsg] = React.useState(false);
 
     const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = React.useState('');
+
+    console.log('APP', loggedIn)
 
     /** Подключения к API. Установка прелоудера. */
     React.useEffect(() => {
@@ -95,6 +98,9 @@ function App() {
             if  (userData) {
                 setIsRegister(isRegister);
                 await handleLoginSubmit(email, password);
+                history.push('/movies');
+
+                return userData;
             }
         } catch (err) {
             console.log(err, 'Ошибка регистрации');
@@ -209,19 +215,22 @@ function App() {
                     onCloseSession={handleCloseSession}
                 />
 
-                <Route path="/signin">
-                    <Login
-                        onLogin={handleLoginSubmit}
-                        loginErrorConnectApiMsg={loginErrorConnectApiMsg}
-                    />
-                </Route>
+                <AuthProtectedRoute
+                    path="/signin"
+                    component={Login}
+                    onLogin={handleLoginSubmit}
+                    loginErrorConnectApiMsg={loginErrorConnectApiMsg}
+                    loggedIn={loggedIn}
 
-                <Route path="/signup">
-                    <Register
-                        onRegister={handleRegisterSubmit}
-                        registerErrorConnectApiMsg={registerErrorConnectApiMsg}
-                    />
-                </Route>
+                />
+
+                <AuthProtectedRoute
+                    path="/signup"
+                    component={Register}
+                    onRegister={handleRegisterSubmit}
+                    registerErrorConnectApiMsg={registerErrorConnectApiMsg}
+                    loggedIn={loggedIn}
+                />
 
                 <Route path="*">
                     <NotFound />

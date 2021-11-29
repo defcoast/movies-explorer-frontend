@@ -32,6 +32,8 @@ export default function Profile(props) {
 
 	const [updateUserEmail, setUpdateUserEmail] = React.useState(currentUser.email);
 
+	console.log(updateUserName)
+
 
 	React.useEffect(() => {
 		if (name === updateUserName || email === updateUserEmail) {
