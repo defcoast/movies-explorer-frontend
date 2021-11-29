@@ -6,10 +6,10 @@ import {Link} from "react-router-dom";
 
 export default function Profile(props) {
 	/** Имя пользователя. */
-	const [name, setName] = React.useState('');
+	const [name, setName] = React.useState(props.currentUser.name);
 
 	/** Email пользователя. */
-	const [email, setEmail ] = React.useState('');
+	const [email, setEmail ] = React.useState(props.currentUser.email);
 
 	/** Коснулся-ли пользователь поля "Имя". */
 	const [nameDirty, setNameDirty] = React.useState(false);
@@ -26,25 +26,30 @@ export default function Profile(props) {
 	/** Валидная-ли форма. */
 	const [isValidForm, setIsValidForm] = React.useState(false);
 
-	const [currentUserName, setCurrentUserName] = React.useState(props.currentUser.name)
-
 	const currentUser = React.useContext(CurrentUserContext);
 
+	const [updateUserName, setUpdateUserName] = React.useState(currentUser.name);
+
+	const [updateUserEmail, setUpdateUserEmail] = React.useState(currentUser.email);
+
+	console.log(currentUser)
+
 	React.useEffect(() => {
-		setCurrentUserName(currentUser.name);
-	}, [currentUser, props.onUpdateProfile]);
+		if (name === updateUserName || email === updateUserEmail) {
+			setIsValidForm(false);
+		}
+	},[name, email, updateUserName, updateUserEmail])
 
 	/** Валидная-ли форма. */
 	React.useEffect(() => {
-		if (!(nameDirty && emailDirty)) {
+		 if (!(nameDirty || emailDirty)) {
 			setIsValidForm(false);
-		}
-		else if (nameError || emailError ) {
+		} else if (nameError || emailError ) {
 			setIsValidForm(false);
 		} else {
 			setIsValidForm(true);
 		}
-	}, [nameError, emailError, nameDirty, emailDirty]);
+	}, [nameError, emailError, nameDirty, emailDirty, name, email]);
 
 	/** Обработчик изменения имени пользователя. */
 	function handleChangeName(e) {
@@ -90,6 +95,8 @@ export default function Profile(props) {
 	function handleFormSubmit(e) {
 		e.preventDefault();
 		props.onUpdateProfile(name, email);
+		setUpdateUserName(name);
+		setUpdateUserEmail(email);
 	}
 
 	/** Обработчик выхода из аккаунта. */
@@ -110,7 +117,7 @@ export default function Profile(props) {
 				>
 					<div>
 						<h1 className="profile__title">
-							{`Привет, ${currentUserName}!`}
+							{`Привет, ${updateUserName}!`}
 						</h1>
 
 						<ul className="profile__inputs">
@@ -121,7 +128,8 @@ export default function Profile(props) {
 								<input
 									type="text"
 									className="profile__input"
-									placeholder={`${props.currentUser.name}`}
+									placeholder={`${updateUserName}`}
+									value={name}
 									id="name"
 									onChange={handleChangeName}
 								/>
@@ -139,7 +147,8 @@ export default function Profile(props) {
 								<input
 									type="email"
 									className="profile__input"
-									placeholder={`${props.currentUser.email}`}
+									placeholder={`${updateUserEmail}`}
+									value={email}
 									id="email"
 									onChange={handleChangeEmail}
 								/>

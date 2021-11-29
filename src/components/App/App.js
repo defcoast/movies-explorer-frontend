@@ -96,7 +96,6 @@ function App() {
             if  (userData) {
                 setIsRegister(isRegister);
                 await handleLoginSubmit(email, password);
-                history.push('/movies');
             }
         } catch (err) {
             console.log(err, 'Ошибка регистрации');
@@ -114,8 +113,9 @@ function App() {
                 const jwt = userData.token;
                 localStorage.setItem('token', jwt);
                 await getCurrentUser(jwt)
-                history.push('/movies');
                 setLoggedIn(loggedIn);
+                history.push('/movies');
+
                 return userData;
             } else {
                 console.log('неверный пароль');
