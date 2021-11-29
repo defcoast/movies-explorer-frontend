@@ -44,7 +44,6 @@ function App() {
     /** Подключения к API. Установка прелоудера. */
     React.useEffect(() => {
         async function fetchMoviesAPI() {
-
             try{
                 setNeedShowPreloader(true);
                 const data = await getSavedMovies();
@@ -80,6 +79,8 @@ function App() {
                 } catch (err) {
                     console.log(err);
                 }
+            } else {
+                setLoggedIn(false);
             }
         }
         checkLoggedUser();
@@ -160,6 +161,10 @@ function App() {
         setSavedMoviesList(sortedMoviesList);
     }
 
+    function handleCloseSession(isLoggedIn) {
+        setLoggedIn(isLoggedIn);
+    }
+
   return (
     <div className="App">
         <CurrentUserContext.Provider value={currentUser ? currentUser : ''}>
@@ -201,6 +206,7 @@ function App() {
                     onUpdateProfile={handleUpdateProfile}
                     updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
                     successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
+                    onCloseSession={handleCloseSession}
                 />
 
                 <Route path="/signin">

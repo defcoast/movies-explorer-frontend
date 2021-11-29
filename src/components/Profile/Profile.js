@@ -101,6 +101,7 @@ export default function Profile(props) {
 	/** Обработчик выхода из аккаунта. */
 	function handleCloseSession() {
 		localStorage.removeItem('token');
+		props.onCloseSession(false);
 	}
 
 	return (
