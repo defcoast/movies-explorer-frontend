@@ -34,10 +34,10 @@ export default function Movies(props) {
 		setNeedShowNotFoundMsg(false);
 
 		if (isShortMovie) {
-			filteredData = moviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
+			filteredData = moviesList.filter(el => (el.nameRU.toLowerCase().includes(searchText.toLowerCase()) && el.duration <= 40));
 			setFilteredMoviesList(filteredData);
 		} else {
-			filteredData = moviesList.filter(el => el.nameRU.includes(searchText));
+			filteredData = moviesList.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
 			setFilteredMoviesList(filteredData);
 		}
 
