@@ -27,6 +27,10 @@
 	display: flex;
 }
 
+.saved:hover .remove {
+	display: block;
+}
+
 .remove {
 	width: 21px;
 	height: 21px;

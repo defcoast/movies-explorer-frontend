@@ -5,13 +5,15 @@ import Preloader from "../others/Preloader/Preloader";
 
 export default function SavedMoviesCardList(props) {
 
+	//
+	// React.useEffect(() => {
+	// 	if (props.filteredMoviesList) {
+	// 		props.onChangeSearchSubmit(props.filteredMoviesList);
+	// 		console.log('list',props.filteredMoviesList)
+	// 	}
+	// }, [props.filteredMoviesList, props.moviesList]);
 
-	React.useEffect(() => {
-		if (props.filteredMoviesList) {
-			props.onChangeSearchSubmit(props.filteredMoviesList);
-			console.log('list',props.filteredMoviesList)
-		}
-	}, [props.filteredMoviesList, props.moviesList]);
+	console.log(props.moviesList)
 
 	/** Преобразование часов фильма в человекочитаемый формат. */
 	function convertDuration(duration) {
@@ -60,6 +62,7 @@ export default function SavedMoviesCardList(props) {
 							isSavedMovies={true}
 							moviesList={props.moviesList}
 							onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
+							savedMoviesList={props.savedMoviesList}
 						/>
 					</a>
 				))}

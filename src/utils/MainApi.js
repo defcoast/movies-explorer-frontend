@@ -31,13 +31,19 @@ export async function saveMovieCard(movie) {
 
 /** Удалить сохраненную карточку с фильмом. */
 export async function removeMovieCard(moviesId) {
-	await fetch(baseURL + '/movies/' + moviesId, {
+	const response = await fetch(baseURL + '/movies/' + moviesId, {
 		method: 'DELETE',
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Bearer ${token}`,
 		},
-	})
+	});
+
+	if (response.status === 201 || response.status === 200) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка регистрации');
 }
 
 /** Зарегистрировать нового пользователя. */
