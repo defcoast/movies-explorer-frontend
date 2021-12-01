@@ -25,9 +25,12 @@ export default function Movies(props) {
 
 	const [searchText, setSearchText] = React.useState('');
 
-	const [filteredMoviesList, setFilteredMoviesList] = React.useState('');
+	const [filteredMoviesList, setFilteredMoviesList] = React.useState([]);
 
 	const [isShortMovie, setIsShortMovie] = React.useState(false);
+
+	console.log('filteredMoviesList', filteredMoviesList)
+
 
 	React.useEffect(() => {
 		let filteredData;
@@ -71,9 +74,25 @@ export default function Movies(props) {
 
 	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
-		if (searchText) {
-			setNeedShowMoviesCardsList(true);
-		}
+		setNeedShowMoviesCardsList(true);
+
+			console.log('lol')
+
+			let filteredData;
+			setNeedShowNotFoundMsg(false);
+
+			if (isShortMovie) {
+				filteredData = moviesList.filter(el => (el.nameRU.toLowerCase().includes(searchText.toLowerCase()) && el.duration <= 40));
+				setFilteredMoviesList(filteredData);
+			} else {
+				filteredData = moviesList.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
+				setFilteredMoviesList(filteredData);
+			}
+
+			if (filteredData.length === 0 && needShowMoviesCardsList) {
+				setNeedShowNotFoundMsg(true);
+			}
+
 	}
 
 	/** Обработчик рендера списка фильмов для пользователей, которые уже были на сайте ранее. */
