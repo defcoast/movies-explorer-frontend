@@ -14,40 +14,71 @@ export default function Movies(props) {
 
 	const [needShowNotFoundMsg, setNeedShowNotFoundMsg] = React.useState(false);
 
+	const [filteredMovieList, setFilteredMovieList] = React.useState(props.savedMoviesList);
+
+	const [currentSearchText, setCurrentSearchText] = React.useState('');
+
+	console.log('filteredMovieList', filteredMovieList)
 
 	React.useEffect(() => {
-		let filteredData;
-		setNeedShowNotFoundMsg(false);
+		setFilteredMovieList(props.savedMoviesList);
 
-		if (isShortMovie) {
-			filteredData = props.savedMoviesList.filter(el => (el.nameRU.toLowerCase().includes(searchText.toLowerCase()) && el.duration <= 40));
-			props.onChangeFilter(filteredData);
-		} else {
-			filteredData = props.savedMoviesList.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
-			props.onChangeFilter(filteredData);
+	}, [props.savedMoviesList]);
 
-		}
 
-		if (filteredData.length === 0) {
-			setNeedShowNotFoundMsg(true);
+	React.useEffect(() => {
+		setCurrentSearchText(searchText);
+		if (!(searchText === currentSearchText)) {
+			let filteredData;
+
+			if (isShortMovie) {
+				filteredData = props.savedMoviesList.filter(el => (el.nameRU.toLowerCase().includes(searchText.toLowerCase()) && el.duration <= 40));
+				if (filteredData.length === 0) {
+					setNeedShowNotFoundMsg(true);
+					setFilteredMovieList([]);
+				} else {
+					setFilteredMovieList(filteredData);
+				}
+			} else {
+				filteredData = props.savedMoviesList.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
+				console.log('filterdata', filteredData)
+
+				if (filteredData.length === 0) {
+					setNeedShowNotFoundMsg(true);
+					setFilteredMovieList([]);
+				} else {
+					setFilteredMovieList(filteredData);
+				}
+			}
 		}
 	}, [searchText, isShortMovie]);
 
 
 	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
-		let filteredData;
+		setCurrentSearchText(searchText);
+		if (!(searchText === currentSearchText)) {
+			let filteredData;
+			setNeedShowNotFoundMsg(false);
 
-		console.log('send')
-		if (isShortMovie) {
-			filteredData = props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
-			props.onChangeFilter(filteredData);
+			console.log('send')
 
-		} else {
-			filteredData = props.savedMoviesList.filter(el => el.nameRU.includes(searchText));
-			// setFilteredMoviesList(filteredData);
-			props.onChangeFilter(filteredData);
+			if (isShortMovie) {
+				filteredData = props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));
+				if (filteredData.length === 0) {
+					setNeedShowNotFoundMsg(true);
+				} else {
+					setFilteredMovieList(filteredData);
+				}
 
+			} else {
+				filteredData = props.savedMoviesList.filter(el => el.nameRU.includes(searchText));
+				if (filteredData.length === 0) {
+					setNeedShowNotFoundMsg(true);
+				} else {
+					setFilteredMovieList(filteredData);
+				}
+			}
 		}
 	}
 
@@ -72,7 +103,7 @@ export default function Movies(props) {
 				isShortMovie={handleIsShortMovie}
 			/>
 			<SavedMoviesCardList
-				moviesList={props.savedMoviesList}
+				moviesList={filteredMovieList}
 				needShowPreloader={props.needShowPreloader}
 				needShowNotFoundMsg={needShowNotFoundMsg}
 				needShowApiErrorMsg={props.needShowApiErrorMsg}
