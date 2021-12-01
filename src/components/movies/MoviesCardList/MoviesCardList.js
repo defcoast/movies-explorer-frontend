@@ -167,9 +167,10 @@ export default function MoviesCardList(props) {
 								duration={convertDuration(movie.duration)}
 								movie={movie}
 								savedMoviesList={props.savedMoviesList}
-								// isSavedMovies={displaySavedMovies(movie)}
+								isSavedMovies={displaySavedMovies(movie)}
 								onSaved={props.onSaved}
 								onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
+								type={'save'}
 							/>
 						</a>
 					))

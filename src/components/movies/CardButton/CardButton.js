@@ -18,6 +18,17 @@ export default function CardButton(props) {
 
 	// const [isSavedMovies, setIsSavedMovies] = React.useState(false);
 
+	React.useEffect(() => {
+		setButtonType(props.type);
+		if (props.movie.id) {
+			for (const savedItem of props.savedMoviesList) {
+				if (Number(savedItem.movieId) === props.movie.id) {
+					setButtonType(ButtonsTypesList.saved);
+				}
+			}
+		}
+	}, [])
+
 
 	/** Обработчик клика по кнопке "Сохранить фильм". */
 	async function handleSaveBtnClick(e) {
@@ -80,7 +91,7 @@ export default function CardButton(props) {
 
 	return (
 		<>
-			{(buttonType === ButtonsTypesList.save && !props.isSavedMovies) &&
+			{(buttonType === ButtonsTypesList.save) &&
 			<form action="#" onClick={handleSaveBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.save}
@@ -90,7 +101,7 @@ export default function CardButton(props) {
 			</form>
 			}
 
-			{(buttonType === ButtonsTypesList.saved || props.isSavedMovies) &&
+			{(buttonType === ButtonsTypesList.saved) &&
 			<form action="" onClick={handleSavedBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.saved}
@@ -98,7 +109,7 @@ export default function CardButton(props) {
 			</form>
 			}
 
-			{(buttonType === ButtonsTypesList.remove || props.isSavedMovies) &&
+			{(buttonType === ButtonsTypesList.remove) &&
 			<form action="#" onClick={handleRemoveBtnClick}>
 				<button
 					className={props.className + ' ' + ButtonsTypesList.remove}

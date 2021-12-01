@@ -63,6 +63,7 @@ export default function SavedMoviesCardList(props) {
 							moviesList={props.moviesList}
 							onRemoveSavedMovieCard={props.onRemoveSavedMovieCard}
 							savedMoviesList={props.savedMoviesList}
+							type={'remove'}
 						/>
 					</a>
 				))}

@@ -14,6 +14,7 @@ export default function MoviesCard(props) {
 				savedMoviesList={props.savedMoviesList}
 				isSavedMovies={props.isSavedMovies}
 				onSaved={props.onSaved}
+				type={props.type}
 			/>
 			<img
 				src={props.image}
