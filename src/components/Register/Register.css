@@ -1,0 +1,149 @@
+.register {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.register__form {
+	max-width: 413px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 0 30px;
+}
+
+.register__title {
+	margin: 0;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 1.2;
+	color: #000;
+}
+
+.register__list {
+	padding: 0;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.register__item {
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+.register__item:last-child {
+	margin-bottom: 0;
+}
+
+.register__label {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 12px;
+	color: #a0a0a0;
+}
+
+.register__input {
+	width: 100%;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	border: none;
+	outline: none;
+	padding: 15px;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 13px;
+	line-height: 1.23;
+	color: #000;
+}
+
+.register__links {
+	margin-top: 70px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.register__button {
+	width: 100%;
+	min-height: 45px;
+	padding: 14px 0;
+	margin: 0 30px;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 1.21;
+	text-align: center;
+	align-self: center;
+}
+
+.register__text {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 1.21;
+	text-align: center;
+	color: #a0a0a0;
+	position: relative;
+	top: 16px;
+}
+
+.register__link {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 1.21;
+	text-align: center;
+	color: #000;
+	text-decoration: none;
+}
+
+.register__error-msg {
+	margin-top: 10px;
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 1.2;
+	color: #ff4062;
+}
+
+.register__connect-err-msg {
+	text-align: center;
+	margin-bottom: 5px;
+	color: red;
+}
+
+@media screen and (max-width: 767px) {
+	.register__title {
+		align-self: center;
+		text-align: center;
+	}
+
+	.register__text {
+		font-size: 12px;
+		line-height: 1.25;
+	}
+
+	.register__link {
+		font-size: 12px;
+		line-height: 1.25;
+	}
+
+	.register__form {
+		height: calc(100vh - 124px + 35px - 30px);
+		justify-content: space-between;
+	}
+}
+
