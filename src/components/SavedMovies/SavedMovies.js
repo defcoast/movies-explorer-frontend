@@ -27,6 +27,8 @@ export default function Movies(props) {
 
 
 	React.useEffect(() => {
+		setNeedShowNotFoundMsg(false);
+
 		setCurrentSearchText(searchText);
 		if (!(searchText === currentSearchText)) {
 			let filteredData;
