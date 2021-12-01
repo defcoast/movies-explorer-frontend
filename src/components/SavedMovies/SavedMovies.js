@@ -18,7 +18,6 @@ export default function Movies(props) {
 
 	const [currentSearchText, setCurrentSearchText] = React.useState('');
 
-	console.log('filteredMovieList', filteredMovieList)
 
 	React.useEffect(() => {
 		setFilteredMovieList(props.savedMoviesList);
@@ -43,7 +42,6 @@ export default function Movies(props) {
 				}
 			} else {
 				filteredData = props.savedMoviesList.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
-				console.log('filterdata', filteredData)
 
 				if (filteredData.length === 0) {
 					setNeedShowNotFoundMsg(true);
@@ -62,8 +60,6 @@ export default function Movies(props) {
 		if (!(searchText === currentSearchText)) {
 			let filteredData;
 			setNeedShowNotFoundMsg(false);
-
-			console.log('send')
 
 			if (isShortMovie) {
 				filteredData = props.savedMoviesList.filter(el => (el.nameRU.includes(searchText) && el.duration <= 40));

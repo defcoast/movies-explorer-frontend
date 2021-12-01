@@ -5,16 +5,6 @@ import Preloader from "../others/Preloader/Preloader";
 
 export default function SavedMoviesCardList(props) {
 
-	//
-	// React.useEffect(() => {
-	// 	if (props.filteredMoviesList) {
-	// 		props.onChangeSearchSubmit(props.filteredMoviesList);
-	// 		console.log('list',props.filteredMoviesList)
-	// 	}
-	// }, [props.filteredMoviesList, props.moviesList]);
-
-	console.log(props.moviesList)
-
 	/** Преобразование часов фильма в человекочитаемый формат. */
 	function convertDuration(duration) {
 		const hours = Math.round(duration / 60) + 'ч';

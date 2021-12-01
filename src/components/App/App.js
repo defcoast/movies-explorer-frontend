@@ -42,15 +42,12 @@ function App() {
 
     const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = React.useState('');
 
-    console.log(savedMoviesList)
-
     /** Подключения к API. Установка прелоудера. */
     React.useEffect(() => {
         async function fetchMoviesAPI() {
             try{
                 setNeedShowPreloader(true);
                 const data = await getSavedMovies();
-                console.log('data app', data)
 
                 if (data.length > 0) {
                     setSavedMoviesList(data);
@@ -153,7 +150,6 @@ function App() {
 
     /** Обработчик удаления сохраненной карточки. */
     function handleRemoveSavedMovieCard(sortedMoviesList) {
-        console.log('sortedMoviesList', sortedMoviesList)
         setSavedMoviesList(sortedMoviesList)
     }
 

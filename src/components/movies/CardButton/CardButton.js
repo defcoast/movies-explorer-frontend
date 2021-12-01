@@ -10,9 +10,6 @@ export default function CardButton(props) {
 		remove : 'remove',
 	};
 
-	// console.log('upper saved movie list', props.savedMoviesList[0]._id);
-
-
 	/** Текущий тип кнопки кнопки. */
 	const [buttonType, setButtonType] = React.useState(ButtonsTypesList.save);
 
@@ -36,7 +33,6 @@ export default function CardButton(props) {
 
 		// Отправляем запрос на сохранение фильма.
 		const result = await saveMovieCard(props.movie);
-		console.log(result)
 		setButtonType(ButtonsTypesList.saved);
 		props.onSaved(result);
 	}
@@ -47,7 +43,6 @@ export default function CardButton(props) {
 		setButtonType(ButtonsTypesList.save);
 
 		if (props.movie.id) {
-			console.log('Зашли в блок удаления')
 			for (const savedItem of props.savedMoviesList) {
 				if (Number(savedItem.movieId) === props.movie.id) {
 
@@ -56,7 +51,6 @@ export default function CardButton(props) {
 
 						if (data) {
 							const updatedList = props.savedMoviesList.filter(updateCard => updateCard._id !== savedItem._id)
-							// console.log('updatedList', updatedList)
 							props.onRemoveSavedMovieCard(updatedList);
 						}
 					} catch (err) {
@@ -69,8 +63,6 @@ export default function CardButton(props) {
 
 	/** Обработчик клика по кнопке "Удалить сохраненный фильм". */
 	async function handleRemoveBtnClick(e) {
-		console.log('PROPS MOVIES ID ->', props.movie._id);
-
 		e.preventDefault();
 		setButtonType(ButtonsTypesList.save);
 
@@ -78,7 +70,6 @@ export default function CardButton(props) {
 		if (props.movie._id) {
 			try {
 				const data = await removeMovieCard(props.movie._id);
-				console.log('data', data)
 				if (data) {
 					props.onRemoveSavedMovieCard(props.movieList.filter(updateCard => updateCard._id !==  props.movie._id));
 				}

@@ -29,9 +29,6 @@ export default function Movies(props) {
 
 	const [isShortMovie, setIsShortMovie] = React.useState(false);
 
-	console.log('filteredMoviesList', filteredMoviesList)
-
-
 	React.useEffect(() => {
 		let filteredData;
 		setNeedShowNotFoundMsg(false);
@@ -75,8 +72,6 @@ export default function Movies(props) {
 	/** Обработчик формы поискового запроса фильмов. */
 	function handleSubmit() {
 		setNeedShowMoviesCardsList(true);
-
-			console.log('lol')
 
 			let filteredData;
 			setNeedShowNotFoundMsg(false);

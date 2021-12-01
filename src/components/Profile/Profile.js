@@ -32,7 +32,11 @@ export default function Profile(props) {
 
 	const [updateUserEmail, setUpdateUserEmail] = React.useState(currentUser.email);
 
-	console.log(updateUserName)
+
+	React.useEffect(() => {
+		setName(props.currentUser.name);
+		setEmail(props.currentUser.email);
+	}, [])
 
 
 	React.useEffect(() => {
@@ -119,7 +123,7 @@ export default function Profile(props) {
 				>
 					<div>
 						<h1 className="profile__title">
-							{`Привет, ${updateUserName}!`}
+							{`Привет, ${currentUser.name}!`}
 						</h1>
 
 						<ul className="profile__inputs">
@@ -130,7 +134,7 @@ export default function Profile(props) {
 								<input
 									type="text"
 									className="profile__input"
-									placeholder={`${updateUserName}`}
+									placeholder={`${currentUser.name}`}
 									value={name}
 									id="name"
 									onChange={handleChangeName}
@@ -149,8 +153,8 @@ export default function Profile(props) {
 								<input
 									type="email"
 									className="profile__input"
-									placeholder={`${updateUserEmail}`}
-									value={updateUserEmail}
+									placeholder={`${currentUser.email}`}
+									value={email}
 									id="email"
 									onChange={handleChangeEmail}
 								/>
