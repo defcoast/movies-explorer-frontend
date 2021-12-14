@@ -94,6 +94,7 @@ export default function MoviesCardList({
 							title={movie.nameRU}
 							duration={convertDuration(movie.duration)}
 							link={movie.trailerLink}
+							movie={movie}
 						/>
 					))}
 					</ul>
