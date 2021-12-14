@@ -21,11 +21,19 @@ export default function Movies() {
 	const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
 
 	useEffect(() => {
+		if (localStorage.getItem(MOVIES_LIST_STORAGE_KEY)) {
+			setNeedDisplayMoviesList(true);
+			setFilteredMoviesList(JSON.parse(localStorage.getItem(MOVIES_LIST_STORAGE_KEY)));
+		}
+	}, []);
+
+	useEffect(() => {
 		if (searchText) {
 			setNeedDisplayMoviesList(true);
 
 			const filteredData = allMovies.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
 			setFilteredMoviesList(filteredData);
+			localStorage.setItem(MOVIES_LIST_STORAGE_KEY, JSON.stringify(filteredData));
 
 			if (filteredData.length === 0 && allMovies.length > 0) {
 				setNeedDisplayNotFoundError(true);
