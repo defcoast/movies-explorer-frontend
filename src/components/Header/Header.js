@@ -9,8 +9,6 @@ Header.defaultProps = {
 };
 
 export default function Header(props) {
-	console.log(props.showNavigation)
-
 	return (
 		<header className={props.showNavigation ? 'header' : ' header header_type_without-nav'}>
 			<Link to="/">

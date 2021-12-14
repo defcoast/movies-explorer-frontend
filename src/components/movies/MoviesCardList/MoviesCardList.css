@@ -30,6 +30,8 @@
 	align-items: center;
 	text-align: center;
 	color: #000;
+}
 
-
+.message {
+	text-align: center;
 }

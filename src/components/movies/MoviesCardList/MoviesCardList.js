@@ -1,107 +1,115 @@
-import React from "react";
+import React, {useEffect} from "react";
 import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard/MoviesCard";
+import Preloader from "../../UI/Preloader/Preloader";
+import {notFoundError, serverError} from "../../../utils/constants";
 
-import card1 from '../../../images/cards/card1.jpg';
-import card2 from '../../../images/cards/card2.jpg';
-import card3 from '../../../images/cards/card3.jpg';
-import card4 from '../../../images/cards/card4.jpg';
-import card5 from '../../../images/cards/card5.jpg';
-import card6 from '../../../images/cards/card6.jpg';
-import card7 from '../../../images/cards/card7.jpg';
-import card8 from '../../../images/cards/card8.jpg';
-import card9 from '../../../images/cards/card9.jpg';
-import card10 from '../../../images/cards/card10.jpg';
-import card11 from '../../../images/cards/card11.jpg';
-import card12 from '../../../images/cards/card12.jpg';
+export default function MoviesCardList({
+	needDisplayMoviesList,
+    needDisplayPreloader,
+    needDisplayApiErrorMsg,
+    filteredMoviesList,
+    needDisplayNotFoundError,
+    totalCardsQuantity,
+    setTotalCardsQuantity,
+    needDisplayShowMoreBtn,
+}) {
 
+	useEffect(() => {
+		handleResize();
+	}, []);
 
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
 
+		setTimeout(() => {
+			handleResize();
+		}, 5000);
 
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		}
+	});
 
+	function handleResize() {
+		if (window.innerWidth < 768) {
+			setTotalCardsQuantity(5);
+		}
+		else if (window.innerWidth >= 768 && window.innerWidth <= 1280) {
+			setTotalCardsQuantity(8);
+		}
+		else if (window.innerWidth > 1280) {
+			setTotalCardsQuantity(12);
+		}
+	}
 
-export default function MoviesCardList() {
+	function handleShowMoreClick() {
+		setTotalCardsQuantity(totalCardsQuantity + 3);
+
+		if (window.innerWidth <= 768) {
+			setTotalCardsQuantity(totalCardsQuantity + 2);
+
+		}
+		else if (window.innerWidth > 768 && window.innerWidth < 1280) {
+			setTotalCardsQuantity(totalCardsQuantity + 2);
+
+		}
+		else if (window.innerWidth >= 1280) {
+			setTotalCardsQuantity(totalCardsQuantity + 3);
+		}
+	}
+
+	function convertDuration(duration) {
+		const hours = Math.round(duration / 60) + 'ч';
+		const minutes = duration % 60 + 'м';
+
+		return hours + ' ' + minutes;
+	}
+
 	return (
 		<>
-			<ul className="movies-list">
-				<MoviesCard
-					image={card1}
-					title="33 слова о дизайне"
-					duration="1ч 17м"
-				/>
+			{needDisplayPreloader &&
+				<Preloader />
+			}
 
-				<MoviesCard
-					image={card2}
-					title="Киноальманах «100 лет дизайна»"
-					duration="1ч 17м"
-				/>
+			{needDisplayApiErrorMsg &&
+				<p className="message">
+					{serverError}
+				</p>
+			}
 
-				<MoviesCard
-					image={card3}
-					title="В погоне за Бенкси"
-					duration="1ч 17м"
-				/>
+			{needDisplayNotFoundError &&
+				<p className="message">
+					{notFoundError}
+				</p>
+			}
 
-				<MoviesCard
-					image={card4}
-					title="Баския: Взрыв реальности"
-					duration="1ч 17м"
-				/>
+			{needDisplayMoviesList &&
+				<>
+					<ul className="movies-list">
+					{filteredMoviesList.slice(0, totalCardsQuantity).map((movie) => (
+						<MoviesCard
+							key={movie.id}
+							image={'https://api.nomoreparties.co' + movie.image.url}
+							title={movie.nameRU}
+							duration={convertDuration(movie.duration)}
+							link={movie.trailerLink}
+						/>
+					))}
+					</ul>
 
-				<MoviesCard
-					image={card5}
-					title="Бег это свобода"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card6}
-					title="Книготорговцы"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card7}
-					title="Когда я думаю о Германии ночью"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card8}
-					title="Gimme Danger: История Игги и The Stooges"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card9}
-					title="Дженис: Маленькая девочка грустит"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card10}
-					title="Дженис: Соберись перед прыжком"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card11}
-					title="Пи Джей Харви: A dog called money"
-					duration="1ч 17м"
-				/>
-
-				<MoviesCard
-					image={card12}
-					title="По волнам: Искусство звука в кино"
-					duration="1ч 17м"
-				/>
-			</ul>
-			<div className="movies-list__show-more-wrapper">
-				<button className="movies-list__show-more-btn">
-					Ещё
-				</button>
-			</div>
+					{needDisplayShowMoreBtn &&
+						<div className="movies-list__show-more-wrapper">
+							<button
+								className="movies-list__show-more-btn"
+								onClick={handleShowMoreClick}
+							>
+								Ещё
+							</button>
+						</div>
+					}
+				</>
+			}
 		</>
-
 	);
 }
