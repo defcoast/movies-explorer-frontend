@@ -8,7 +8,7 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import React, {useEffect, useState} from "react";
 import NotFound from "../NotFound/NotFound";
-import {getCurrentUser, loginUser, registerUser} from "../../utils/MainApi";
+import {getCurrentUser, getSavedMovies, loginUser, registerUser} from "../../utils/MainApi";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
 
 function App() {
@@ -16,11 +16,44 @@ function App() {
 
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
-
-    console.log(currentUser)
+    const [savedMoviesList, setSavedMoviesList] = useState([]);
 
     useEffect(() => {
-        return checkLoggedUser;
+        async function getSavedMoviesList() {
+            try {
+                const data = await getSavedMovies();
+                if (data) {
+                    setSavedMoviesList(data);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        getSavedMoviesList();
+    }, []);
+
+
+    useEffect(() => {
+        async function checkLoggedUser() {
+            const jwt = localStorage.getItem('token');
+
+            if (jwt) {
+                try {
+                    const userData = await getCurrentUser(jwt);
+                    setLoggedIn(true);
+
+                    if (userData) {
+                        setCurrentUser(userData);
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                setLoggedIn(false);
+            }
+        }
+        checkLoggedUser();
     }, [loggedIn]);
 
    async function handleRegister(name, email, password) {
@@ -50,43 +83,48 @@ function App() {
         }
     }
 
-    async function checkLoggedUser() {
-        const jwt = localStorage.getItem('token');
-
-        if (jwt) {
-            try {
-                const userData = await getCurrentUser(jwt);
-                setLoggedIn(true);
-
-                if (userData) {
-                    setCurrentUser(userData);
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            setLoggedIn(false);
-        }
-    }
+    // async function updateProfile(name, email) {
+    //     const jwt = localStorage.getItem('token');
+    //     if (jwt) {
+    //         try {
+    //             const updatedUserData = await updateProfile(name, email, jwt);
+    //             setCurrentUser({name, email});
+    //             if (updatedUserData) {
+    //                 setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
+    //             }
+    //         } catch (err) {
+    //             console.log(err, 'Ошибка обновления пользовательских данных');
+    //             setUpdateProfileErrorConnectApiMsg('Ошибка обновления пользовательских данных');
+    //         }
+    //     }
+    // }
 
   return (
     <div className="App">
-    <CurrentUserContext.Provider value={currentUser ? currentUser : ''}>
+    <CurrentUserContext.Provider value={currentUser}>
       <Switch>
           <Route exact path="/" >
               <Main />
           </Route>
 
           <Route path="/movies">
-              <Movies />
+              <Movies
+                  savedMoviesList={savedMoviesList}
+                  setSavedMoviesList={setSavedMoviesList}
+              />
           </Route>
 
           <Route path="/saved-movies">
-              <SavedMovies />
+              <SavedMovies
+                  savedMoviesList={savedMoviesList}
+                  setSavedMoviesList={setSavedMoviesList}
+              />
           </Route>
 
           <Route path="/profile">
-              <Profile />
+              <Profile
+
+              />
           </Route>
 
           <Route path="/signin">

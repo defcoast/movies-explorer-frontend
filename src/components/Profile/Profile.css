@@ -92,6 +92,23 @@
 	text-decoration: none;
 }
 
+.profile__submit-btn {
+	font-family: Inter, sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 1.23;
+	color: #000;
+	text-decoration: none;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.profile__submit-btn_disabled {
+	opacity: .1;
+}
+
 .profile__link_color_red {
 	font-weight: 500;
 	color: #ff4062;

@@ -83,3 +83,54 @@ export async function getCurrentUser(jwt) {
 
 	throw new Error('Ошибка загрузки пользовательских данных');
 }
+
+export async function updateProfile(name, email, jwt) {
+	const response = await fetch(BASE_URL + 'users/me',{
+		method: 'PATCH',
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization" : `Bearer ${jwt}`,
+		},
+		body: JSON.stringify({
+			name: name,
+			email: email,
+		})
+	});
+
+	if (response.ok) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка обновления пользовательских данных');
+}
+
+export async function removeMovieCard(moviesId) {
+	const response = await fetch(BASE_URL + 'movies/' + moviesId, {
+		method: 'DELETE',
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${token}`,
+		},
+	});
+
+	if (response.ok) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка регистрации');
+}
+
+export async function getSavedMovies() {
+	const response = await fetch(BASE_URL + 'movies', {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization" : `Bearer ${token}`,
+		}
+	});
+
+	if (response.ok) {
+		return response.json();
+	}
+
+	throw new Error('Ошибка загрузки фильмов');
+}

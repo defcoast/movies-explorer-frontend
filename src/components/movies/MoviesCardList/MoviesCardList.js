@@ -13,6 +13,9 @@ export default function MoviesCardList({
     totalCardsQuantity,
     setTotalCardsQuantity,
     needDisplayShowMoreBtn,
+	type,
+	savedMoviesList,
+	setSavedMoviesList,
 }) {
 
 	useEffect(() => {
@@ -95,6 +98,10 @@ export default function MoviesCardList({
 							duration={convertDuration(movie.duration)}
 							link={movie.trailerLink}
 							movie={movie}
+							type={type}
+							setSavedMoviesList={setSavedMoviesList}
+							savedMoviesList={savedMoviesList}
+							filteredMoviesList={filteredMoviesList}
 						/>
 					))}
 					</ul>

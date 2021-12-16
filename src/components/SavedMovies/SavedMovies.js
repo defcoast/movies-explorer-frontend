@@ -1,16 +1,21 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import './SavedMovies.css';
 import SearchForm from "../movies/SearchForm/SearchForm";
-import MoviesCardList from "../movies/MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import SavedMoviesCardList from "../SavedMoviesCardList/SavedMoviesCardList";
 
-export default function SavedMovies() {
+export default function SavedMovies({savedMoviesList, setSavedMoviesList}) {
+
+
 	return (
 		<section className="saved-movies">
 			<Header />
 			<SearchForm />
-			<MoviesCardList />
+			<SavedMoviesCardList
+				savedMoviesList={savedMoviesList}
+				setSavedMoviesList={setSavedMoviesList}
+			/>
 			<Footer />
 		</section>
 	);

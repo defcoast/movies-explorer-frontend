@@ -7,7 +7,7 @@ import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 import {getMoviesList} from "../../../utils/MoviesApi";
 
-export default function Movies() {
+export default function Movies({savedMoviesList, setSavedMoviesList}) {
 	const [allMovies, setAllMovies] = useState([]);
 	const [filteredMoviesList, setFilteredMoviesList] = useState([]);
 	const [searchText, setSearchText] = useState('');
@@ -94,6 +94,8 @@ export default function Movies() {
 				needDisplayApiErrorMsg={needDisplayApiErrorMsg}
 				needDisplayNotFoundError={needDisplayNotFoundError}
 				needDisplayShowMoreBtn={needDisplayShowMoreBtn}
+				savedMoviesList={savedMoviesList}
+				setSavedMoviesList={setSavedMoviesList}
 			/>
 			<Footer />
 		</section>
