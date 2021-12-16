@@ -10,6 +10,7 @@ import React, {useEffect, useState} from "react";
 import NotFound from "../NotFound/NotFound";
 import {getCurrentUser, getSavedMovies, loginUser, registerUser, updateProfile} from "../../utils/MainApi";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
+import ProtectedRoute from "../../utils/ProtectedRoute";
 
 function App() {
     const history = useHistory();
@@ -97,7 +98,6 @@ function App() {
             try {
                 const updatedUserData = await updateProfile(name, email, jwt);
                 if (updatedUserData) {
-                    console.log(updatedUserData)
                     setCurrentUser({name, email});
                     setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
                 }
@@ -126,43 +126,45 @@ function App() {
               />
           </Route>
 
-          <Route path="/movies">
-              <Movies
-                  savedMoviesList={savedMoviesList}
-                  setSavedMoviesList={setSavedMoviesList}
-                  loggedIn={loggedIn}
-              />
-          </Route>
+          <ProtectedRoute
+              path="/movies"
+              component={Movies}
+              loggedIn={loggedIn}
+              savedMoviesList={savedMoviesList}
+              setSavedMoviesList={setSavedMoviesList}
+          />
 
-          <Route path="/saved-movies">
-              <SavedMovies
-                  savedMoviesList={savedMoviesList}
-                  setSavedMoviesList={setSavedMoviesList}
-                  loggedIn={loggedIn}
-              />
-          </Route>
+          <ProtectedRoute
+              path="/saved-movies"
+              component={SavedMovies}
+              loggedIn={loggedIn}
+              savedMoviesList={savedMoviesList}
+              setSavedMoviesList={setSavedMoviesList}
+          />
 
-          <Route path="/profile">
-              <Profile
-                  updateProfile={handleUpdateProfile}
-                  successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
-                  updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
-                  logOut={logOut}
-                  loggedIn={loggedIn}
-              />
-          </Route>
+          <ProtectedRoute
+              path="/profile"
+              component={Profile}
+              loggedIn={loggedIn}
+              updateProfile={handleUpdateProfile}
+              successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
+              updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
+              logOut={logOut}
+          />
 
-          <Route path="/signin">
-              <Login
-                  onLogin={handleLogin}
-              />
-          </Route>
+          <ProtectedRoute
+              path="/signin"
+              component={Login}
+              loggedIn={!loggedIn}
+              onLogin={handleLogin}
+          />
 
-          <Route path="/signup">
-              <Register
-                  onRegister={handleRegister}
-              />
-          </Route>
+          <ProtectedRoute
+              path="/signup"
+              component={Register}
+              loggedIn={!loggedIn}
+              onRegister={handleRegister}
+          />
 
           <Route path="*">
               <NotFound />

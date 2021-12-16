@@ -37,7 +37,6 @@ export default function SavedMovies({savedMoviesList, setSavedMoviesList, logged
 	}, [searchText, savedMoviesList, isShortMovie]);
 
 	function handleIsShortMovie(e) {
-		console.log(e.target.checked)
 		setIsShortMovie(e.target.checked);
 	}
 

@@ -30,8 +30,6 @@ export default function CardButton({type,
 
 	async function handleSavedBtn() {
 		if (movie._id) {
-			console.log('saved mivies', movie)
-
 			try {
 				const data = await removeMovieCard(movie._id);
 				if (data) {
@@ -43,7 +41,6 @@ export default function CardButton({type,
 			}
 		}
 		else {
-			console.log('muvies', movie)
 			const savedEl = savedMoviesList.find(item => Number(item.movieId) === movie.id)
 			try {
 				const data = await removeMovieCard(savedEl._id);

@@ -7,8 +7,6 @@ import {Link} from "react-router-dom";
 export default function Profile(props) {
 	const currentUser = React.useContext(CurrentUserContext);
 
-	console.log(currentUser)
-
 	/** Имя пользователя. */
 	const [name, setName] = React.useState('');
 
