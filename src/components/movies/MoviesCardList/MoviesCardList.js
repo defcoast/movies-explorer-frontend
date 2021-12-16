@@ -63,7 +63,7 @@ export default function MoviesCardList({
 	}
 
 	function convertDuration(duration) {
-		const hours = Math.round(duration / 60) + 'ч';
+		const hours = Math.floor(duration / 60) + 'ч';
 		const minutes = duration % 60 + 'м';
 
 		return hours + ' ' + minutes;

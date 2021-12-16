@@ -19,7 +19,12 @@ function App() {
     const [savedMoviesList, setSavedMoviesList] = useState([]);
 
     const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = useState('');
-    const [updateProfileErrorConnectApiMsg, setUpdateProfileErrorConnectApiMsg] = useState()
+    const [updateProfileErrorConnectApiMsg, setUpdateProfileErrorConnectApiMsg] = useState('');
+
+    const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
+    const IS_SHORT_MOVIE_STORAGE_KEY = 'is-short-movies';
+    const SEARCH_TEXT__STORAGE_KEY = 'search-text';
+
 
     useEffect(() => {
         async function getSavedMoviesList() {
@@ -104,9 +109,11 @@ function App() {
     }
 
     function logOut() {
+        localStorage.removeItem(MOVIES_LIST_STORAGE_KEY);
+        localStorage.removeItem(IS_SHORT_MOVIE_STORAGE_KEY);
+        localStorage.removeItem(SEARCH_TEXT__STORAGE_KEY);
         localStorage.removeItem('token');
-        localStorage.removeItem('filtered-movies-list');
-        setLoggedIn(false);
+        setLoggedIn(false)
     }
 
   return (

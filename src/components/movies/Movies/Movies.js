@@ -17,31 +17,47 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 	const [needDisplayApiErrorMsg, setNeedDisplayApiErrorMsg] = useState(false);
 	const [needDisplayNotFoundError, setNeedDisplayNotFoundError] = useState(false);
 	const [needDisplayShowMoreBtn, setNeedDisplayShowMoreBtn] = useState(false);
+	const [isShortMovie, setIsShortMovie] = useState(false);
 
 	const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
+	const IS_SHORT_MOVIE_STORAGE_KEY = 'is-short-movies'
+
 
 	useEffect(() => {
 		if (localStorage.getItem(MOVIES_LIST_STORAGE_KEY)) {
 			setNeedDisplayMoviesList(true);
 			setFilteredMoviesList(JSON.parse(localStorage.getItem(MOVIES_LIST_STORAGE_KEY)));
 		}
-	}, []);
+		if (localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)) {
+			setIsShortMovie(JSON.parse(localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)));
+		}
+	}, [savedMoviesList, isShortMovie]);
 
 	useEffect(() => {
-		if (searchText) {
+			let filteredData;
 			setNeedDisplayMoviesList(true);
 
-			const filteredData = allMovies.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
-			setFilteredMoviesList(filteredData);
-			localStorage.setItem(MOVIES_LIST_STORAGE_KEY, JSON.stringify(filteredData));
+			if (isShortMovie) {
+				filteredData = allMovies.filter(el => (el.nameRU.toLowerCase().includes(searchText.toLowerCase()) && el.duration <= 40));
+				setFilteredMoviesList(filteredData);
+				if (filteredData.length > 0) {
+					localStorage.setItem(MOVIES_LIST_STORAGE_KEY, JSON.stringify(filteredData));
+				}
+			}
+			else {
+				filteredData = allMovies.filter(el => el.nameRU.toLowerCase().includes(searchText.toLowerCase()));
+				setFilteredMoviesList(filteredData);
+				if (searchText) {
+					localStorage.setItem(MOVIES_LIST_STORAGE_KEY, JSON.stringify(filteredData));
+				}
+			}
 
 			if (filteredData.length === 0 && allMovies.length > 0) {
 				setNeedDisplayNotFoundError(true);
 			} else {
 				setNeedDisplayNotFoundError(false);
 			}
-		}
-	}, [searchText, allMovies]);
+	}, [searchText, allMovies, isShortMovie]);
 
 	useEffect(() => {
 		if (filteredMoviesList.length > 3) {
@@ -77,6 +93,12 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 			await loadAllCards();
 		}
 	}
+
+	function handleIsShortMovie(e) {
+		setIsShortMovie(e.target.checked);
+		localStorage.setItem(IS_SHORT_MOVIE_STORAGE_KEY, JSON.stringify(e.target.checked));
+	}
+
 	return (
 		<section className="movies">
 			<Header
@@ -85,6 +107,7 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 
 			<SearchForm
 				changeSearchText={changeSearchText}
+				isShortMovie={handleIsShortMovie}
 			/>
 
 			<MoviesCardList

@@ -68,7 +68,7 @@ export default function Profile(props) {
 		setNameDirty(true);
 		setName(targetName);
 
-		const re = /^[a-zа-яё\s\-]+$/;
+		const re = /^[a-zа-яё\s-]+$/;
 		if (targetName.length < 2 || targetName.length > 30) {
 			setNameError('Имя не может быть меньше 2-х и больше 30 символов');
 		}

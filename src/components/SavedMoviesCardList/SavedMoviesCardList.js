@@ -2,9 +2,9 @@ import React from "react";
 import './SavedMoviesCardList.css'
 import MoviesCard from "../movies/MoviesCard/MoviesCard";
 
-export default function SavedMoviesCardList({savedMoviesList, setSavedMoviesList}) {
+export default function SavedMoviesCardList({savedMoviesList, setSavedMoviesList, needDisplayNotFoundError}) {
 	function convertDuration(duration) {
-		const hours = Math.round(duration / 60) + 'ч';
+		const hours = Math.floor(duration / 60) + 'ч';
 		const minutes = duration % 60 + 'м';
 
 		return hours + ' ' + minutes;
@@ -12,6 +12,11 @@ export default function SavedMoviesCardList({savedMoviesList, setSavedMoviesList
 
 	return(
 		<>
+			{needDisplayNotFoundError &&
+				<p className="message">
+					Ничего не найдено
+				</p>
+			}
 			<ul className="movies-list">
 				{savedMoviesList.map((movie, index) => (
 					<MoviesCard

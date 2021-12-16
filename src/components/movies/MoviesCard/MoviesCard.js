@@ -17,14 +17,13 @@ export default function MoviesCard(props) {
 		}
 
 		if (props.movie.id) {
-			console.log(props.savedMoviesList)
 			for (const savedItem of props.savedMoviesList) {
 				if (Number(savedItem.movieId) === props.movie.id) {
 					setCurrentBtnType(btnTypeList.saved);
 				}
 			}
 		}
-	}, [props.movie.id]);
+	}, [props.movie.id, props.savedMoviesList]);
 
 	return (
 		<a href={props.link} className="card__link">
