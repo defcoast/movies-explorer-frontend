@@ -14,7 +14,7 @@ export default function SearchForm({changeSearchText, isShortMovie}) {
 
 	function handleChange() {
 		setValue(searchInput.current.value)
-		localStorage.setItem(SEARCH_TEXT__STORAGE_KEY, JSON.stringify(searchInput.current.value))
+		localStorage.setItem(SEARCH_TEXT__STORAGE_KEY, JSON.stringify(searchInput.current.value));
 	}
 
 

@@ -22,6 +22,8 @@ function App() {
     const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = useState('');
     const [updateProfileErrorConnectApiMsg, setUpdateProfileErrorConnectApiMsg] = useState('');
 
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
     const IS_SHORT_MOVIE_STORAGE_KEY = 'is-short-movies';
     const SEARCH_TEXT__STORAGE_KEY = 'search-text';
@@ -50,9 +52,10 @@ function App() {
             if (jwt) {
                 try {
                     const userData = await getCurrentUser(jwt);
-                    setLoggedIn(true);
 
                     if (userData) {
+                        setLoggedIn(true);
+                        setIsLoaded(true);
                         setCurrentUser(userData);
                     }
                 } catch (err) {
@@ -98,6 +101,7 @@ function App() {
             try {
                 const updatedUserData = await updateProfile(name, email, jwt);
                 if (updatedUserData) {
+                    console.log(updatedUserData)
                     setCurrentUser({name, email});
                     setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
                 }
@@ -126,49 +130,64 @@ function App() {
               />
           </Route>
 
-          <ProtectedRoute
-              path="/movies"
-              component={Movies}
-              loggedIn={loggedIn}
-              savedMoviesList={savedMoviesList}
-              setSavedMoviesList={setSavedMoviesList}
-          />
+          {isLoaded &&
+              <ProtectedRoute
+                  path="/movies"
+                  component={Movies}
+                  loggedIn={loggedIn}
+                  savedMoviesList={savedMoviesList}
+                  setSavedMoviesList={setSavedMoviesList}
+                  isLoaded={isLoaded}
+              />
+          }
 
-          <ProtectedRoute
-              path="/saved-movies"
-              component={SavedMovies}
-              loggedIn={loggedIn}
-              savedMoviesList={savedMoviesList}
-              setSavedMoviesList={setSavedMoviesList}
-          />
 
-          <ProtectedRoute
-              path="/profile"
-              component={Profile}
-              loggedIn={loggedIn}
-              updateProfile={handleUpdateProfile}
-              successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
-              updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
-              logOut={logOut}
-          />
+          {(savedMoviesList && isLoaded) &&
+              <ProtectedRoute
+                  path="/saved-movies"
+                  component={SavedMovies}
+                  loggedIn={loggedIn}
+                  savedMoviesList={savedMoviesList}
+                  setSavedMoviesList={setSavedMoviesList}
+              />
+          }
 
-          <ProtectedRoute
-              path="/signin"
-              component={Login}
-              loggedIn={!loggedIn}
-              onLogin={handleLogin}
-          />
+          {(currentUser && isLoaded) &&
+              <ProtectedRoute
+                  path="/profile"
+                  component={Profile}
+                  loggedIn={loggedIn}
+                  updateProfile={handleUpdateProfile}
+                  successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
+                  updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
+                  logOut={logOut}
+              />
+          }
 
-          <ProtectedRoute
-              path="/signup"
-              component={Register}
-              loggedIn={!loggedIn}
-              onRegister={handleRegister}
-          />
+          {(currentUser && isLoaded) &&
+              <ProtectedRoute
+                  path="/signin"
+                  component={Login}
+                  loggedIn={!loggedIn}
+                  onLogin={handleLogin}
+              />
+          }
 
-          <Route path="*">
-              <NotFound />
-          </Route>
+          {(currentUser && isLoaded) &&
+              <ProtectedRoute
+                  path="/signup"
+                  component={Register}
+                  loggedIn={!loggedIn}
+                  onRegister={handleRegister}
+              />
+          }
+
+          {loggedIn &&
+              <Route path="*">
+                  <NotFound />
+              </Route>
+          }
+
       </Switch>
     </CurrentUserContext.Provider>
     </div>

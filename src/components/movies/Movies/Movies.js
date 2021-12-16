@@ -21,16 +21,19 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 
 	const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
 	const IS_SHORT_MOVIE_STORAGE_KEY = 'is-short-movies'
-
+	const SEARCH_TEXT__STORAGE_KEY = 'search-text';
 
 	useEffect(() => {
-		if (localStorage.getItem(MOVIES_LIST_STORAGE_KEY)) {
-			setNeedDisplayMoviesList(true);
-			setFilteredMoviesList(JSON.parse(localStorage.getItem(MOVIES_LIST_STORAGE_KEY)));
-		}
-		if (localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)) {
-			setIsShortMovie(JSON.parse(localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)));
-		}
+		setTimeout(() => {
+			if (localStorage.getItem(MOVIES_LIST_STORAGE_KEY)) {
+				setNeedDisplayMoviesList(true);
+				setFilteredMoviesList(JSON.parse(localStorage.getItem(MOVIES_LIST_STORAGE_KEY)));
+			}
+			if (localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)) {
+				setIsShortMovie(JSON.parse(localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)));
+			}
+		}, 200)
+
 	}, [savedMoviesList, isShortMovie]);
 
 	useEffect(() => {
@@ -87,7 +90,11 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 	}
 
 	async function changeSearchText(text) {
-		setSearchText(text);
+		if (localStorage.getItem(SEARCH_TEXT__STORAGE_KEY)){
+			setSearchText(JSON.parse(localStorage.getItem(SEARCH_TEXT__STORAGE_KEY)));
+		} else {
+			setSearchText(text);
+		}
 
 		if (allMovies.length === 0) {
 			await loadAllCards();
