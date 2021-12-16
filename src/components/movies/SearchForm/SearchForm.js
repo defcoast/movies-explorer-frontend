@@ -5,9 +5,14 @@ import CustomCheckbox from "../../others/CustomCheckbox/CustomCheckbox";
 export default function SearchForm({changeSearchText}) {
 	const [value, setValue] = useState('');
 
+	function handleSubmit(e) {
+		e.preventDefault();
+		changeSearchText(value);
+	}
+
 	return (
 		<div className="search">
-			<form action="#" className="search__form" onSubmit={() => changeSearchText(value)}>
+			<form action="#" className="search__form" onSubmit={handleSubmit}>
 				<div className="search__left-wrapper">
 					<span className="search__placeholder-icon" />
 					<input

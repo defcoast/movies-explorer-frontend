@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import './Profile.css';
 import Header from "../Header/Header";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
@@ -7,11 +7,13 @@ import {Link} from "react-router-dom";
 export default function Profile(props) {
 	const currentUser = React.useContext(CurrentUserContext);
 
+	console.log(currentUser)
+
 	/** Имя пользователя. */
-	const [name, setName] = React.useState(currentUser.name);
+	const [name, setName] = React.useState('');
 
 	/** Email пользователя. */
-	const [email, setEmail ] = React.useState(currentUser.email);
+	const [email, setEmail ] = React.useState('');
 
 	/** Коснулся-ли пользователь поля "Имя". */
 	const [nameDirty, setNameDirty] = React.useState(false);
@@ -32,12 +34,16 @@ export default function Profile(props) {
 
 	const [updateUserEmail, setUpdateUserEmail] = React.useState(currentUser.email);
 
+	const nameInput = useRef('');
+
+	const emailInput = useRef('');
 
 	React.useEffect(() => {
-		setName(currentUser.name);
-		setEmail(currentUser.email);
-	}, [])
-
+		if (currentUser) {
+			setName(currentUser.name);
+			setEmail(currentUser.email);
+		}
+	});
 
 	React.useEffect(() => {
 		if (name === updateUserName || email === updateUserEmail) {
@@ -84,7 +90,7 @@ export default function Profile(props) {
 		setEmailDirty(true);
 		setEmail(targetName);
 
-		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		const re =  /\S+@\S+\.\S+/;
 		if (!re.test(String(targetName).toLowerCase())) {
 			setEmailError('Некорректный email');
 		}
@@ -99,15 +105,10 @@ export default function Profile(props) {
 	/** Обработчик отправки формы на сервер. */
 	function handleFormSubmit(e) {
 		e.preventDefault();
-		// props.onUpdateProfile(name, email);
-		// setUpdateUserName(name);
-		// setUpdateUserEmail(email);
-	}
 
-	/** Обработчик выхода из аккаунта. */
-	function handleCloseSession() {
-		// localStorage.removeItem('token');
-		// props.onCloseSession(false);
+		props.updateProfile(nameInput.current.value, emailInput.current.value)
+		setUpdateUserName(nameInput.current.value);
+		setUpdateUserEmail(emailInput.current.value);
 	}
 
 	return (
@@ -134,8 +135,9 @@ export default function Profile(props) {
 								<input
 									type="text"
 									className="profile__input"
-									placeholder={`${currentUser.name}`}
-									value={name}
+									placeholder="Стас Басов"
+									defaultValue={name}
+									ref={nameInput}
 									id="name"
 									onChange={handleChangeName}
 								/>
@@ -153,8 +155,9 @@ export default function Profile(props) {
 								<input
 									type="email"
 									className="profile__input"
-									placeholder={`${currentUser.email}`}
-									value={email}
+									placeholder="basovstas@yandex.ru"
+									defaultValue={email}
+									ref={emailInput}
 									id="email"
 									onChange={handleChangeEmail}
 								/>
@@ -168,11 +171,11 @@ export default function Profile(props) {
 					</div>
 
 					<div className="profile__links">
-						{/*{props.successfullyUpdateProfileMsg &&*/}
-						{/*	<span>*/}
-						{/*		{props.successfullyUpdateProfileMsg}*/}
-						{/*	</span>*/}
-						{/*}*/}
+						{props.successfullyUpdateProfileMsg &&
+							<span>
+								{props.successfullyUpdateProfileMsg}
+							</span>
+						}
 						<button
 							type="submit"
 							disabled={!isValidForm}
@@ -180,7 +183,7 @@ export default function Profile(props) {
 						>
 							Редактировать
 						</button>
-						<Link to='/' className="profile__link profile__link_color_red"  onClick={handleCloseSession}>
+						<Link to='/' className="profile__link profile__link_color_red"  onClick={props.logOut}>
 							Выйти из аккаунта
 						</Link>
 					</div>

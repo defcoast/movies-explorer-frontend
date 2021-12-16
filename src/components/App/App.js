@@ -8,7 +8,7 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import React, {useEffect, useState} from "react";
 import NotFound from "../NotFound/NotFound";
-import {getCurrentUser, getSavedMovies, loginUser, registerUser} from "../../utils/MainApi";
+import {getCurrentUser, getSavedMovies, loginUser, registerUser, updateProfile} from "../../utils/MainApi";
 import {CurrentUserContext} from "../../utils/CurrentUserContext";
 
 function App() {
@@ -17,6 +17,9 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
     const [savedMoviesList, setSavedMoviesList] = useState([]);
+
+    const [successfullyUpdateProfileMsg, setSuccessfullyUpdateProfileMsg] = useState('');
+    const [updateProfileErrorConnectApiMsg, setUpdateProfileErrorConnectApiMsg] = useState()
 
     useEffect(() => {
         async function getSavedMoviesList() {
@@ -83,21 +86,28 @@ function App() {
         }
     }
 
-    // async function updateProfile(name, email) {
-    //     const jwt = localStorage.getItem('token');
-    //     if (jwt) {
-    //         try {
-    //             const updatedUserData = await updateProfile(name, email, jwt);
-    //             setCurrentUser({name, email});
-    //             if (updatedUserData) {
-    //                 setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
-    //             }
-    //         } catch (err) {
-    //             console.log(err, 'Ошибка обновления пользовательских данных');
-    //             setUpdateProfileErrorConnectApiMsg('Ошибка обновления пользовательских данных');
-    //         }
-    //     }
-    // }
+    async function handleUpdateProfile(name, email) {
+        const jwt = localStorage.getItem('token');
+        if (jwt) {
+            try {
+                const updatedUserData = await updateProfile(name, email, jwt);
+                if (updatedUserData) {
+                    console.log(updatedUserData)
+                    setCurrentUser({name, email});
+                    setSuccessfullyUpdateProfileMsg('Вы успешно изменили данные');
+                }
+            } catch (err) {
+                console.log(err, 'Ошибка обновления пользовательских данных');
+                setUpdateProfileErrorConnectApiMsg('Ошибка обновления пользовательских данных');
+            }
+        }
+    }
+
+    function logOut() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('filtered-movies-list');
+        setLoggedIn(false);
+    }
 
   return (
     <div className="App">
@@ -123,7 +133,10 @@ function App() {
 
           <Route path="/profile">
               <Profile
-
+                  updateProfile={handleUpdateProfile}
+                  successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
+                  updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
+                  logOut={logOut}
               />
           </Route>
 
