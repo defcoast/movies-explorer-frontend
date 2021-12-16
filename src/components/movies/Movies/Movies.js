@@ -7,7 +7,7 @@ import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 import {getMoviesList} from "../../../utils/MoviesApi";
 
-export default function Movies({savedMoviesList, setSavedMoviesList}) {
+export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) {
 	const [allMovies, setAllMovies] = useState([]);
 	const [filteredMoviesList, setFilteredMoviesList] = useState([]);
 	const [searchText, setSearchText] = useState('');
@@ -79,7 +79,9 @@ export default function Movies({savedMoviesList, setSavedMoviesList}) {
 	}
 	return (
 		<section className="movies">
-			<Header />
+			<Header
+				loggedIn={loggedIn}
+			/>
 
 			<SearchForm
 				changeSearchText={changeSearchText}

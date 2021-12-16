@@ -5,12 +5,14 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import SavedMoviesCardList from "../SavedMoviesCardList/SavedMoviesCardList";
 
-export default function SavedMovies({savedMoviesList, setSavedMoviesList}) {
+export default function SavedMovies({savedMoviesList, setSavedMoviesList, loggedIn}) {
 
 
 	return (
 		<section className="saved-movies">
-			<Header />
+			<Header
+				loggedIn={loggedIn}
+			/>
 			<SearchForm />
 			<SavedMoviesCardList
 				savedMoviesList={savedMoviesList}

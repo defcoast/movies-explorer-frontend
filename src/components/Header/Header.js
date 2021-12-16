@@ -16,7 +16,9 @@ export default function Header(props) {
 			</Link>
 
 			{props.showNavigation &&
-				<Navigation />
+				<Navigation
+					loggedIn={props.loggedIn}
+				/>
 			}
 		</header>
 	);

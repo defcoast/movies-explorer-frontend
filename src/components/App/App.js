@@ -111,16 +111,19 @@ function App() {
 
   return (
     <div className="App">
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={currentUser ? currentUser : ''}>
       <Switch>
           <Route exact path="/" >
-              <Main />
+              <Main
+                  loggedIn={loggedIn}
+              />
           </Route>
 
           <Route path="/movies">
               <Movies
                   savedMoviesList={savedMoviesList}
                   setSavedMoviesList={setSavedMoviesList}
+                  loggedIn={loggedIn}
               />
           </Route>
 
@@ -128,6 +131,7 @@ function App() {
               <SavedMovies
                   savedMoviesList={savedMoviesList}
                   setSavedMoviesList={setSavedMoviesList}
+                  loggedIn={loggedIn}
               />
           </Route>
 
@@ -137,6 +141,7 @@ function App() {
                   successfullyUpdateProfileMsg={successfullyUpdateProfileMsg}
                   updateProfileErrorConnectApiMsg={updateProfileErrorConnectApiMsg}
                   logOut={logOut}
+                  loggedIn={loggedIn}
               />
           </Route>
 
