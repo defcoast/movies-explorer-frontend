@@ -164,23 +164,19 @@ function App() {
               />
           }
 
-          {(currentUser && isLoaded) &&
               <ProtectedRoute
                   path="/signin"
                   component={Login}
                   loggedIn={!loggedIn}
                   onLogin={handleLogin}
               />
-          }
 
-          {(currentUser && isLoaded) &&
               <ProtectedRoute
                   path="/signup"
                   component={Register}
                   loggedIn={!loggedIn}
                   onRegister={handleRegister}
               />
-          }
 
           {loggedIn &&
               <Route path="*">

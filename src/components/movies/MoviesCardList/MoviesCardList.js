@@ -19,32 +19,25 @@ export default function MoviesCardList({
 }) {
 
 	useEffect(() => {
-		handleResize();
-	}, []);
-
-	useEffect(() => {
+		function handleResize() {
+			if (window.innerWidth < 768) {
+				setTotalCardsQuantity(5);
+			}
+			else if (window.innerWidth >= 768 && window.innerWidth <= 1280) {
+				setTotalCardsQuantity(8);
+			}
+			else if (window.innerWidth > 1280) {
+				setTotalCardsQuantity(12);
+			}
+		}
 		window.addEventListener('resize', handleResize);
 
-		setTimeout(() => {
-			handleResize();
-		}, 5000);
+		handleResize();
 
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		}
-	});
-
-	function handleResize() {
-		if (window.innerWidth < 768) {
-			setTotalCardsQuantity(5);
-		}
-		else if (window.innerWidth >= 768 && window.innerWidth <= 1280) {
-			setTotalCardsQuantity(8);
-		}
-		else if (window.innerWidth > 1280) {
-			setTotalCardsQuantity(12);
-		}
-	}
+	},[window.innerWidth, setTotalCardsQuantity]);
 
 	function handleShowMoreClick() {
 		setTotalCardsQuantity(totalCardsQuantity + 3);

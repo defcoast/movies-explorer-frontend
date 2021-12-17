@@ -16,12 +16,14 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 	const [needDisplayPreloader, setNeedDisplayPreloader] = useState(false);
 	const [needDisplayApiErrorMsg, setNeedDisplayApiErrorMsg] = useState(false);
 	const [needDisplayNotFoundError, setNeedDisplayNotFoundError] = useState(false);
-	const [needDisplayShowMoreBtn, setNeedDisplayShowMoreBtn] = useState(false);
+	const [needDisplayShowMoreBtn, setNeedDisplayShowMoreBtn] = useState(true);
 	const [isShortMovie, setIsShortMovie] = useState(false);
 
 	const MOVIES_LIST_STORAGE_KEY = 'filtered-movies-list';
 	const IS_SHORT_MOVIE_STORAGE_KEY = 'is-short-movies'
 	const SEARCH_TEXT__STORAGE_KEY = 'search-text';
+
+	console.log(totalCardsQuantity)
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -32,7 +34,7 @@ export default function Movies({savedMoviesList, setSavedMoviesList, loggedIn}) 
 			if (localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)) {
 				setIsShortMovie(JSON.parse(localStorage.getItem(IS_SHORT_MOVIE_STORAGE_KEY)));
 			}
-		}, 200)
+		}, 200);
 
 	}, [savedMoviesList, isShortMovie]);
 
